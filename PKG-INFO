@@ -1,0 +1,27 @@
+Metadata-Version: 1.0
+Name: kedpm
+Version: 0.4.0
+Summary: Ked Password Manager
+Home-page: http://kedpm.sourceforge.net/
+Author: Andrey Lebedev
+Author-email: andrey@users.sourceforge.net
+License: GPL
+Description: Ked Password Manager helps to manage large amounts of
+        passwords and related information and simplifies tasks of searching and
+        entering password data.
+        
+        Ked-PM written as extensible framework, which allows to plug in custom password
+        database back-ends and custom user interface front-ends. Currently only Figaro
+        PM back-end. To control KedPM user can choose between  CLI and GTK2 based GUI
+        front-ends.
+Platform: POSIX
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Environment :: X11 Applications :: GTK
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: GNU General Public License (GPL)
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Topic :: Security
+Classifier: Topic :: Utilities

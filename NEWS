@@ -1,0 +1,88 @@
+==========================
+Ked Password Manager: NEWS
+==========================
+
+Ked Password Manager project news. For more detailed list of changes,
+see CHANGES file.
+
+
+KedPM-0.4.0: Everybody must get stoned
+======================================
+
+2004.02.29. After a long idling, I've finally found some time to work on
+KedPM. 
+
+With this release I've decided to change project status from
+alpha to beta. I've used the program quite a lot and it performed great,
+so I think its ready for public testing.
+
+Apart bug fixing, this release introduces parser's pattern editor
+(without much documentation yet), subcategories of arbitrary depth and
+various usability improvements. Figaro Password Manager compatibility is
+still in place:)
+
+
+KedPM-0.3.1
+===========
+
+2003.10.27. Kedpm-0.3.0 had a bug that prevented creating of a new
+databases. This is fixed in this release. A small fix of a big bug.
+
+KedPM-0.3.0: Meet Parser
+========================
+
+2003.10.26 Two major features added in this release. The first is the
+Parser feature, that will help you incorporate passwords from your mails
+to database more efficiently. Second: ability to search password tree
+recursively. It will allow you to search all your passwords in one
+operation.
+
+Other updates include experimental fpm-0.58 format support (with it's
+longer passwords), basic configuration options, deleting and moving
+passwords, ability to display password as plain text in GUI, various
+usability enhancements.
+
+
+KedPM-0.2.5: How long your passwords are?
+=========================================
+
+2003.09.21 This is a bug-fix release. It fixes a major Figaro Password
+Manager bug - inability to store long passwords in database. fpm can't
+handle passwords longer than 24 characters. KedPM now can, but fpm-0.53
+will not load them correctly anyway.
+
+GUI can create new fpm database, if it isn't already exist. Sorry for
+those users, who downloaded version 0.2.0, but could not start GUI.
+
+
+KedPM-0.2.0: Featuring GUI 
+===========================
+
+2003.09.14 This release adds support for GTK2 Graphical User Interface.
+All features of command line interface are supported, including quick
+search.
+
+
+KedPM-0.1.0 released
+====================
+
+2003.08.20 In this release KedPM is able to save passwords to Figaro
+Password Manager compatible database. The new version also introduces
+ability to add and edit your passwords.
+
+Some other improvements makes this software quite usable.
+
+
+First release (0.0.2)
+=====================
+
+2003.08.05 The first public release of Ked Password Manager. Do not
+expect much from this code. This release is basically to make sure that
+all necessary infrastructure is in place.
+
+If you have Figaro password database, you may wish to try this software
+out. Make sure you've backed up your ~/.fpm/fpm though.
+
+
+
+.. vim: tw=72 et fo=t nocindent

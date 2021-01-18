@@ -1,0 +1,570 @@
+2004-02-29 14:26  kedder
+
+	* kedpm/frontends/cli.py: Completion bug fixed
+
+2004-02-29 13:56  kedder
+
+	* CHANGES: Preparing for 0.4.0 release
+
+2004-02-29 13:45  kedder
+
+	* CHANGES, MANIFEST.in, NEWS, README, setup.py, kedpm/__init__.py,
+	  kedpm/parser.py, kedpm/plugins/pdb_figaro.py: Preparing for 0.4.0
+	  release
+
+2004-02-28 20:45  kedder
+
+	* CHANGES, kedpm/password_tree.py, kedpm/frontends/cli.py,
+	  kedpm/frontends/gtk/wnd_main.py, test/test_password_tree.py:
+	  Better completion in CLI.  Password list columns in GUI are now
+	  sortable and resizable.
+
+2004-02-28 18:34  kedder
+
+	* CHANGES, glade/kedpm.glade, kedpm/frontends/gtk/wnd_main.py,
+	  kedpm/plugins/pdb_figaro.py: Saving history of searches in GUI.
+	  The feature is similar to browser url bar history.
+
+2004-02-25 00:58  kedder
+
+	* CHANGES, kedpm/password_tree.py, kedpm/plugins/pdb_figaro.py,
+	  test/test_config.py, test/test_figaro.py,
+	  test/test_password_tree.py: Support for arbitrary depth password
+	  trees hacked
+
+2004-02-19 23:51  kedder
+
+	* CHANGES, kedpm/frontends/cli.py, kedpm/frontends/gtk/dialogs.py:
+	  * Parser patterns editor added (finished).  * CLI frontend
+	  remembers command history between runs.
+
+2004-01-18 18:29  kedder
+
+	* CHANGES, glade/kedpm.glade, kedpm/__init__.py, kedpm/config.py,
+	  kedpm/frontends/cli.py, kedpm/frontends/gtk/dialogs.py,
+	  kedpm/frontends/gtk/wnd_main.py: Parser patterns editor added.
+
+2004-01-04 20:21  kedder
+
+	* CHANGES, glade/cloud16.png, glade/kedpm.glade,
+	  glade/kedpm.gladep, glade/logo.png: KedPM has got icons! Thanks
+	  to Eugene Morozov.
+
+2004-01-04 19:07  kedder
+
+	* CHANGES, glade/kedpm.glade, kedpm/config.py, kedpm/passdb.py,
+	  kedpm/frontends/cli.py, kedpm/frontends/frontend.py,
+	  kedpm/frontends/gtk/app.py, kedpm/frontends/gtk/preferences.py,
+	  kedpm/plugins/pdb_figaro.py: Location of FPM password database
+	  file is configurable in options ('fpm-database' setting).
+
+2004-01-02 23:08  kedder
+
+	* CHANGES, glade/kedpm.glade, kedpm/frontends/gtk/wnd_main.py: *
+	  Search entry automatically gets focus, when switching to flat
+	  view.
+
+	  * First password in root category creation bug fixed. GTK
+	  warnings should be gone too. (SF BUG #862551)
+
+2003-10-27 20:16  kedder
+
+	* README, ReleasePlan.txt: i should check better before release
+
+2003-10-27 15:41  kedder
+
+	* NEWS: preparing for 0.3.1 release
+
+2003-10-27 15:39  kedder
+
+	* CHANGES, kedpm/__init__.py: Fixed password database
+	  initialization problem
+
+2003-10-27 15:29  kedder
+
+	* kedpm/plugins/pdb_figaro.py: initalization problem fixed
+
+2003-10-26 19:36  kedder
+
+	* CHANGES, NEWS: preparing for 0.3.0 release
+
+2003-10-26 18:58  kedder
+
+	* CHANGES, glade/kedpm.glade, kedpm/password_tree.py,
+	  kedpm/frontends/cli.py, kedpm/frontends/gtk/wnd_main.py,
+	  test/test_password_tree.py: recursive search implemented
+
+2003-10-26 00:23  kedder
+
+	* CHANGES, README, kedpm/__init__.py: documentation update
+
+2003-10-25 22:59  kedder
+
+	* CHANGES: little fix
+
+2003-10-25 22:51  kedder
+
+	* glade/kedpm.glade, kedpm/frontends/gtk/dialogs.py,
+	  kedpm/frontends/gtk/wnd_main.py: plain text in password context
+	  menu
+
+2003-10-25 22:43  kedder
+
+	* glade/kedpm.glade, kedpm/frontends/gtk/preferences.py:
+	  preferences are actually saved now
+
+2003-10-25 22:39  kedder
+
+	* CHANGES, glade/kedpm.glade, kedpm/frontends/gtk/dialogs.py,
+	  kedpm/frontends/gtk/wnd_main.py: GUI now can display password as
+	  plain text.
+
+2003-10-25 21:51  kedder
+
+	* CHANGES: fpm-0.58 support is not tested yet
+
+2003-10-25 21:47  kedder
+
+	* CHANGES, kedpm/plugins/pdb_figaro.py, test/test_figaro.py:
+	  Support for fpm-0.58 databases with longer passwords (up to
+	  256 characters).
+
+2003-10-25 20:43  kedder
+
+	* MANIFEST.in, Makefile: unit tests didn't worked in distribution.
+	  oops.
+
+2003-10-25 20:21  kedder
+
+	* CHANGES, glade/kedpm.glade, kedpm/parser.py,
+	  kedpm/frontends/gtk/dialogs.py, kedpm/frontends/gtk/wnd_main.py,
+	  test/test_parser.py: parser for GUI works
+
+2003-10-25 19:12  kedder
+
+	* kedpm/parser.py, test/test_parser.py: parser improved
+
+2003-10-24 00:11  kedder
+
+	* glade/kedpm.glade, kedpm/parser.py, kedpm/frontends/cli.py,
+	  kedpm/frontends/gtk/dialogs.py, kedpm/frontends/gtk/wnd_main.py,
+	  test/test_parser.py: some initial parser implementation
+
+2003-10-23 00:33  kedder
+
+	* CHANGES, kedpm/password_tree.py, kedpm/frontends/cli.py: rmdir
+	  and mv commands were added to CLI (Patch #825957). Thanks
+	  indygena.
+
+2003-10-19 01:56  kedder
+
+	* kedpm/__init__.py: fixed installation prefix detection bug
+
+2003-10-19 01:08  kedder
+
+	* CHANGES, glade/kedpm.glade, kedpm/frontends/gtk/wnd_main.py:
+	  Various GUI usability enhancements.
+
+2003-10-18 23:26  kedder
+
+	* CHANGES, glade/kedpm.glade, kedpm/frontends/cli.py,
+	  kedpm/frontends/gtk/wnd_main.py: password deleting implemented in
+	  gui, deleting in cli fixed
+
+2003-10-16 00:29  kedder
+
+	* kedpm/password_tree.py, kedpm/frontends/cli.py,
+	  test/sample_config.xml, test/test_config.py,
+	  test/test_password_tree.py: deleting implemented. deleting
+	  support to cli added
+
+2003-10-15 23:25  kedder
+
+	* glade/kedpm.glade, kedpm/frontends/gtk/wnd_main.py: hint about
+	  regular expressions in searches added
+
+2003-10-15 00:30  kedder
+
+	* CHANGES, kedpm/config.py, kedpm/frontends/cli.py,
+	  kedpm/frontends/gtk/dialogs.py, kedpm/frontends/gtk/wnd_main.py,
+	  kedpm/plugins/pdb_figaro.py, test/sample_config.xml,
+	  test/test_config.py: configuration saving and initialising
+	  implemented; gui obeys save-mode setting
+
+2003-10-15 00:22  kedder
+
+	* ReleasePlan.txt: note about making maintenence branch after
+	  release
+
+2003-10-14 00:09  kedder
+
+	* glade/kedpm.glade, kedpm/config.py,
+	  kedpm/frontends/gtk/dialogs.py,
+	  kedpm/frontends/gtk/preferences.py,
+	  kedpm/frontends/gtk/wnd_main.py: preferences in gui works
+
+2003-10-13 21:55  kedder
+
+	* .cvsignore: ignoring ChangeLog - it is generated via cvs2cl
+
+2003-10-13 21:53  kedder
+
+	* ChangeLog: removed since ChangeLog is completely generated from
+	  cvs repository
+
+2003-10-12 23:39  kedder
+
+	* kedpm/config.py, kedpm/frontends/cli.py,
+	  kedpm/frontends/gtk/dialogs.py, kedpm/frontends/gtk/wnd_main.py,
+	  scripts/kedpm, test/test_config.py: validating for options
+	  implemented
+
+2003-10-12 23:36  kedder
+
+	* kedpm/__init__.py: compatibility for python <= 2.2
+
+2003-10-12 00:03  kedder
+
+	* glade/kedpm.glade, kedpm/frontends/gtk/dialogs.py,
+	  kedpm/frontends/gtk/wnd_main.py: preferences dialog added to gtk
+	  frontend
+
+2003-10-11 20:41  kedder
+
+	* kedpm/config.py, kedpm/frontends/cli.py, test/test_config.py:
+	  options support for cli implemented
+
+2003-10-10 00:12  kedder
+
+	* kedpm/config.py, kedpm/frontends/cli.py,
+	  kedpm/frontends/frontend.py, scripts/kedpm, test/test_config.py:
+	  configuration framework added
+
+2003-10-08 23:10  kedder
+
+	* kedpm/: __init__.py, frontends/gtk/globals.py: autoconfiguring
+	  data directory runtime
+
+2003-10-04 01:08  kedder
+
+	* MANIFEST.in, kedpm/config.py, kedpm/parser.py,
+	  kedpm/password_tree.py, test/sample_config.xml,
+	  test/test_config.py, test/test_parser.py: basic configuration
+	  infrastructure added
+
+2003-10-01 00:02  kedder
+
+	* kedpm/parser.py, kedpm/frontends/cli.py, test/test_parser.py:
+	  parser recognizes patterns inside the sample text
+
+2003-09-27 22:48  kedder
+
+	* kedpm/__init__.py, kedpm/parser.py, test/test_parser.py: adding
+	  basic parsing code
+
+2003-09-22 23:20  kedder
+
+	* CHANGES, ChangeLog, kedpm/password_tree.py,
+	  test/test_password_tree.py: Searching is case insensitive (as it
+	  should be)
+
+2003-09-21 23:44  kedder
+
+	* NEWS: paraphrase news
+
+2003-09-21 23:05  kedder
+
+	* setup.py, kedpm/__init__.py: added GTK trove classifier, version
+	  increase
+
+2003-09-21 22:39  kedder
+
+	* CHANGES, Makefile, kedpm-cli, kedpm-gtk, glade/kedpm.glade,
+	  kedpm/frontends/cli.py, kedpm/frontends/frontend.py,
+	  kedpm/frontends/gtk/app.py, kedpm/frontends/gtk/dialogs.py: GUI
+	  now can initialise Figaro database.
+
+2003-09-21 21:18  kedder
+
+	* CHANGES, kedpm/password.py, kedpm/password_tree.py,
+	  kedpm/frontends/cli.py, kedpm/frontends/gtk/dialogs.py,
+	  kedpm/plugins/pdb_figaro.py, test/test_figaro.py: fixed fpm long
+	  password bug
+
+2003-09-14 15:15  kedder
+
+	* CHANGES, ChangeLog, INSTALL, MANIFEST.in, NEWS, README,
+	  ReleasePlan.txt, setup.py, glade/kedpm.glade, kedpm/__init__.py,
+	  kedpm/frontends/gtk/dialogs.py: prerelease machinations
+
+2003-09-12 21:48  kedder
+
+	* kedpm/frontends/frontend.py: missed frontend abstraction added
+
+2003-09-12 21:37  kedder
+
+	* kedpm/frontends/cli.py: python2.1 compatibility fix
+
+2003-09-12 21:19  kedder
+
+	* kedpm/frontends/: __init__.py, cli.py, gtk/app.py: gtk frontend
+	  now saves backup of password database
+
+2003-09-12 20:47  kedder
+
+	* setup.py, kedpm/frontends/gtk/globals.py: glade file is now
+	  installed in /share/kedpm/glade
+
+2003-09-06 23:08  kedder
+
+	* .cvsignore: more files to ignore
+
+2003-09-06 23:04  kedder
+
+	* MANIFEST.in, NEWS, README, kedpm-cli, kedpm-gtk, setup.py,
+	  kedpm/frontends/__init__.py, scripts/.cvsignore, scripts/kedpm:
+	  all frontends are now managed from single script
+
+2003-09-06 00:24  kedder
+
+	* kedpm/: password_tree.py, frontends/gtk/dialogs.py,
+	  frontends/gtk/wnd_main.py: Prompt to save when database changed
+
+2003-09-05 22:40  kedder
+
+	* Makefile, glade/kedpm.glade, kedpm/__init__.py,
+	  kedpm/frontends/gtk/base.py, kedpm/frontends/gtk/wnd_main.py:
+	  password list popup menu works
+
+2003-09-04 23:28  kedder
+
+	* NEWS, glade/kedpm.glade, kedpm/exceptions.py,
+	  kedpm/password_tree.py, kedpm/frontends/cli.py,
+	  kedpm/frontends/gtk/wnd_main.py, test/test_password_tree.py:
+	  Added ability to rename password categories
+
+2003-09-03 00:40  kedder
+
+	* ChangeLog, glade/kedpm.glade, kedpm/frontends/gtk/wnd_main.py:
+	  little usability improvements
+
+2003-09-02 00:27  kedder
+
+	* ChangeLog, NEWS, glade/kedpm.glade, kedpm/frontends/gtk/base.py,
+	  kedpm/frontends/gtk/dialogs.py, kedpm/frontends/gtk/wnd_main.py:
+	  Category adding implemented
+
+2003-08-31 23:06  kedder
+
+	* glade/kedpm.glade, kedpm/frontends/gtk/dialogs.py,
+	  kedpm/frontends/gtk/wnd_main.py: edit and add dialogs finished
+
+2003-08-31 00:47  kedder
+
+	* glade/kedpm.glade, kedpm/frontends/gtk/app.py,
+	  kedpm/frontends/gtk/dialogs.py, kedpm/frontends/gtk/wnd_main.py:
+	  working on password edit dialog
+
+2003-08-27 23:09  kedder
+
+	* glade/kedpm.glade, kedpm/frontends/gtk/wnd_main.py: password
+	  filtering gui implemented
+
+2003-08-27 00:33  kedder
+
+	* ChangeLog, MANIFEST.in, setup.py, glade/kedpm.glade,
+	  kedpm/__init__.py, kedpm/frontends/gtk/wnd_main.py:
+	  infrastructure updates, X selection copying implemented
+
+2003-08-26 00:32  kedder
+
+	* glade/kedpm.glade, kedpm/frontends/gtk/base.py,
+	  kedpm/frontends/gtk/wnd_main.py: little popup support code
+
+2003-08-25 00:51  kedder
+
+	* glade/kedpm.glade, kedpm/password_tree.py,
+	  kedpm/frontends/gtk/wnd_main.py: password navigation almost done
+
+2003-08-24 17:01  kedder
+
+	* glade/kedpm.glade, kedpm/frontends/gtk/app.py,
+	  kedpm/frontends/gtk/base.py, kedpm/frontends/gtk/dialogs.py:
+	  login procedure implemented
+
+2003-08-24 12:35  kedder
+
+	* ChangeLog, glade/kedpm.glade, kedpm/frontends/gtk/app.py,
+	  kedpm/frontends/gtk/base.py, kedpm/frontends/gtk/dialogs.py,
+	  kedpm/frontends/gtk/globals.py, kedpm/frontends/gtk/wnd_main.py:
+	  GTK infastructure
+
+2003-08-23 00:53  kedder
+
+	* kedpm-gtk, glade/kedpm.glade, glade/kedpm.gladep,
+	  kedpm/frontends/gtk/__init__.py, kedpm/frontends/gtk/app.py:
+	  starting gui support
+
+2003-08-20 22:36  kedder
+
+	* NEWS: Date of release updated
+
+2003-08-20 22:32  kedder
+
+	* setup.py: trove added
+
+2003-08-20 22:13  kedder
+
+	* NEWS: paraphrase
+
+2003-08-20 21:59  kedder
+
+	* INSTALL, README: typo fixes
+
+2003-08-20 21:55  kedder
+
+	* ChangeLog, INSTALL: info about running tests
+
+2003-08-20 00:19  kedder
+
+	* kedpm/__init__.py: incrementing version
+
+2003-08-19 21:56  kedder
+
+	* INSTALL, README: doc updates
+
+2003-08-19 21:56  kedder
+
+	* kedpm/plugins/pdb_figaro.py: directory for new database created
+	  automatically
+
+2003-08-19 11:22  kedder
+
+	* README: small rst hacks
+
+2003-08-19 00:43  kedder
+
+	* README: more docs
+
+2003-08-18 21:53  kedder
+
+	* NEWS, kedpm/frontends/cli.py: cli command 'mkdir' implemented
+
+2003-08-17 22:38  kedder
+
+	* ChangeLog, kedpm/frontends/cli.py: Autosaving implemented. KedPM
+	  will ask to save everytime db has changed
+
+2003-08-17 21:56  kedder
+
+	* ChangeLog, kedpm/passdb.py, kedpm/frontends/cli.py,
+	  kedpm/plugins/pdb_figaro.py, test/test_figaro.py, NEWS: If KedPM
+	  detects that it had opened database saved by FPM, it makes a
+	  backup.
+
+2003-08-17 13:20  kedder
+
+	* kedpm/frontends/cli.py: password editing improved
+
+2003-08-17 00:11  kedder
+
+	* ChangeLog, NEWS, kedpm-cli, kedpm/password.py,
+	  kedpm/password_tree.py, kedpm/frontends/cli.py,
+	  kedpm/plugins/pdb_figaro.py, test/test_figaro.py,
+	  test/test_password.py, test/test_password_tree.py: cli
+	  improvements
+
+2003-08-15 23:43  kedder
+
+	* ChangeLog, NEWS, kedpm/passdb.py, kedpm/password.py,
+	  kedpm/password_tree.py, kedpm/frontends/cli.py,
+	  kedpm/plugins/pdb_figaro.py, test/fpm.sample,
+	  test/test_figaro.py: fpm compatible saving implemented
+
+2003-08-15 20:45  kedder
+
+	* AUTHORS, ChangeLog, MANIFEST.in, NEWS: Added ChangeLog and NEWS
+	  files
+
+2003-08-14 01:01  kedder
+
+	* kedpm/password_tree.py, kedpm/plugins/pdb_figaro.py,
+	  test/test_figaro.py, test/test_password_tree.py: basic fpm xml
+	  restoring from tree implemented
+
+2003-08-13 01:08  kedder
+
+	* kedpm/plugins/pdb_figaro.py, test/test_figaro.py: preparing for
+	  figaro saving implementation
+
+2003-08-12 23:02  kedder
+
+	* kedpm/frontends/cli.py: ls on nonexistant direcrory doesn't fail
+
+2003-08-12 00:29  kedder
+
+	* kedpm/password.py, kedpm/frontends/cli.py, test/test_password.py:
+	  Basic password editing support in cli. No saving implemented yet
+	  though.
+
+2003-08-11 23:14  kedder
+
+	* INSTALL, kedpm/plugins/pdb_figaro.py, test/test_figaro.py:
+	  support for python-2.1 added
+
+2003-08-08 01:26  kedder
+
+	* .cvsignore, kedpm/password.py, kedpm/password_tree.py,
+	  kedpm/frontends/cli.py, kedpm/plugins/pdb_figaro.py,
+	  test/test_password.py, test/test_password_tree.py: Moved to new
+	  password infrastructure. Password field are now defined in
+	  structure
+
+2003-08-07 22:07  kedder
+
+	* kedpm/frontends/cli.py: show password immediately if only one to
+	  show
+
+2003-08-07 21:56  kedder
+
+	* kedpm-cli, kedpm/plugins/pdb_figaro.py: xml parsing bug in fpm
+	  plugin fixed
+
+2003-08-06 23:37  kedder
+
+	* MANIFEST.in, test/test_figaro.py: one more figaro test for
+	  decription quality
+
+2003-08-06 23:25  kedder
+
+	* kedpm/frontends/cli.py, test/fpm.sample, test/test_figaro.py:
+	  added simple figaro unittest
+
+2003-08-06 22:55  kedder
+
+	* kedpm/__init__.py: increment version
+
+2003-08-05 22:03  kedder
+
+	* .cvsignore: ignoring distribution files
+
+2003-08-05 21:32  kedder
+
+	* AUTHORS, MANIFEST.in, Makefile, README, kedpm-cli, run_tests,
+	  INSTALL, setup.py, COPYING, kedpm/__init__.py, kedpm/crypt.py,
+	  kedpm/exceptions.py, kedpm/passdb.py, kedpm/password.py,
+	  kedpm/password_tree.py, kedpm/frontends/__init__.py,
+	  kedpm/frontends/cli.py, kedpm/plugins/__init__.py,
+	  kedpm/plugins/pdb_figaro.py, test/__init__.py,
+	  test/test_password_tree.py: Initial revision
+
+2003-08-05 21:32  kedder
+
+	* AUTHORS, MANIFEST.in, Makefile, README, kedpm-cli, run_tests,
+	  INSTALL, setup.py, COPYING, kedpm/__init__.py, kedpm/crypt.py,
+	  kedpm/exceptions.py, kedpm/passdb.py, kedpm/password.py,
+	  kedpm/password_tree.py, kedpm/frontends/__init__.py,
+	  kedpm/frontends/cli.py, kedpm/plugins/__init__.py,
+	  kedpm/plugins/pdb_figaro.py, test/__init__.py,
+	  test/test_password_tree.py: initial checkin
+
