@@ -19,18 +19,16 @@
 """ Figaro password manager database plugin """
 
 import os
-
+from random import randint
 from xml.dom import minidom
-from string import strip
+
 from Crypto.Cipher import Blowfish
 from Crypto.Hash import MD5
 
-from random import randint
-
 from kedpm.exceptions import WrongPassword
 from kedpm.passdb import PasswordDatabase, DatabaseNotExist
-from kedpm.password_tree import PasswordTree
 from kedpm.password import Password, TYPE_STRING, TYPE_TEXT, TYPE_PASSWORD
+from kedpm.password_tree import PasswordTree
 
 FPM_PASSWORD_LEN = 24
 
@@ -57,7 +55,7 @@ class FigaroPassword (Password):
 
     def __setitem__(self, key, value):
         if key=='password' and len(value) > FPM_PASSWORD_LEN and not self.store_long_password:
-            raise FigaroPasswordTooLongError, "Password is too long"
+            raise FigaroPasswordTooLongError("Password is too long")
         Password.__setitem__(self, key, value)
 
 
@@ -73,21 +71,21 @@ class PDBFigaro (PasswordDatabase):
     FULL_VERSION = "00.53.00"
     DISPLAY_VERSION = "0.53"
     MIN_VERSION = "00.50.00"
-    
+
     def __init__(self, **args):
         self._pass_tree = PasswordTree()
-        if args.has_key('filename'):
+        if 'filename' in args:
             self.default_db_filename = args['filename']
 
     def open(self, password, fname=""):
         """ Open figaro password database and construct password tree """
-        
+
         self._password = password
         self.filename = fname or self.default_db_filename
 
         # Check existance of database file
         if not os.access(self.filename, os.F_OK):
-            raise DatabaseNotExist, 'File %s is not found' % self.filename
+            raise DatabaseNotExist('File %s is not found' % self.filename)
 
         fpm = minidom.parse(self.filename)
 
@@ -98,13 +96,13 @@ class PDBFigaro (PasswordDatabase):
 
     def convDomToTree(self, fpm):
         'Read figaro xml database and create password tree from it'
-        
+
         root = fpm.documentElement
         # Save version information
         self.FULL_VERSION = root.getAttribute('full_version')
         self.MIN_VERSION = root.getAttribute('min_version')
         self.DISPLAY_VERSION = root.getAttribute('display_version')
-        
+
         # Support long passwords of fpm-0.58
         if self.MIN_VERSION >="00.58.00":
             global FPM_PASSWORD_LEN
@@ -114,7 +112,7 @@ class PDBFigaro (PasswordDatabase):
         self._salt = keyinfo.getAttribute('salt')
         vstring = keyinfo.getAttribute('vstring')
         if self.decrypt(vstring) != "FIGARO":
-            raise WrongPassword, "Wrong password"
+            raise WrongPassword("Wrong password")
 
         # Save LauncherList xml element. Although kedpm don't use launchers
         # yet, this list will be inserted into saved database to preserve
@@ -142,7 +140,7 @@ class PDBFigaro (PasswordDatabase):
 
     def save(self, fname=""):
         """Save figaro password database"""
-    
+
         # Create new salt for each save
         self._salt = self.generateSalt()
         doc = self.convTreeToDom()
@@ -150,7 +148,7 @@ class PDBFigaro (PasswordDatabase):
         f = open(filename, 'w')
         f.write(doc.toxml())
         f.close()
-        os.chmod(filename, 0600)
+        os.chmod(filename, 0o600)
 
     def generateSalt(self):
         """Generate salt, that consists of 8 small latin characters"""
@@ -158,10 +156,10 @@ class PDBFigaro (PasswordDatabase):
         for i in range(8):
             salt += chr(randint(ord('a'), ord('z')))
         return salt
-        
+
     def convTreeToDom(self):
         """Build and return DOM document from current password tree"""
-        
+
         domimpl = minidom.getDOMImplementation()
         document= domimpl.createDocument("http://kedpm.sourceforge.net/xml/fpm", "FPM", None)
         root = document.documentElement
@@ -174,7 +172,7 @@ class PDBFigaro (PasswordDatabase):
         keyinfo.setAttribute('salt', self._salt)
         keyinfo.setAttribute('vstring', self.encrypt('FIGARO'))
         root.appendChild(keyinfo)
-        
+
         # Add LauncherList for fpm compatibility
         if self.launcherlist:
             root.appendChild(self.launcherlist)
@@ -222,8 +220,8 @@ class PDBFigaro (PasswordDatabase):
         filename = fname or self.default_db_filename
         dirname, fname = os.path.split(filename)
         if not os.access(dirname, os.F_OK):
-            print "Creating directory %s" % dirname
-            os.mkdir(dirname, 0700)
+            print( "Creating directory %s" % dirname)
+            os.mkdir(dirname, 0o700)
         newdb = PDBFigaro()
         newdb._password = password
         newdb.save(filename)
@@ -234,14 +232,14 @@ class PDBFigaro (PasswordDatabase):
         params = {}
         for field in fields:
             params[field] = self._getTagData(node, field)
-        
+
         # save default and launcher fields for fpm compatibility
         chnode = node.getElementsByTagName('default')
         if len(chnode)==1:
             params['default'] = 1
         params['launcher'] = self._getTagData(node, 'launcher')
         return FigaroPassword(**params)
-    
+
     def _getTagData(self, node, tag):
         chnode = node.getElementsByTagName(tag)
         if chnode and node.hasChildNodes():
@@ -252,7 +250,7 @@ class PDBFigaro (PasswordDatabase):
                 encrypted += child.data
             assert len(encrypted) % 8 == 0
             return self.decrypt(encrypted)
-        else: return ""    
+        else: return ""
 
     def encrypt(self, field, field_is_password=0):
         """ Encrypt FPM encoded field """
@@ -263,7 +261,7 @@ class PDBFigaro (PasswordDatabase):
         # Allow passwords that are longer than 24 characters. Unfortunately
         # this will break fpm compatibility somewhat - fpm will not be able to
         # handle such long password correctly.
-        noised = self._addNoise(field, field_is_password and 
+        noised = self._addNoise(field, field_is_password and
                 (len(field) / FPM_PASSWORD_LEN + 1) * FPM_PASSWORD_LEN)
         rotated = self._rotate(noised)
         encrypted = bf.encrypt(rotated)
@@ -273,7 +271,7 @@ class PDBFigaro (PasswordDatabase):
     def decrypt(self, field):
         """ Decrypt FPM encoded field """
         hash=MD5.new()
-        hash.update(self._salt + self._password)
+        hash.update((self._salt + self._password).encode())
         key = hash.digest()
         bf = Blowfish.new(key)
         binstr = self._hex_to_bin(field)
@@ -294,20 +292,20 @@ class PDBFigaro (PasswordDatabase):
 
     def _hex_to_bin(self, strin):
         """Used in decrypt"""
-        strout = ""
-        for i in range(len(strin) / 2):
+        strout = b""
+        for i in range(len(strin) // 2):
             high = ord(strin[i * 2]) - ord('a')
             low = ord(strin[i * 2 + 1]) - ord('a')
             data = high * 16 + low
             assert data < 256
-            strout = strout + chr(data)
+            strout = strout + data.to_bytes(1, byteorder='big')
         return strout
 
     def _addNoise(self, field, reslen = 0):
         """If we have a short string, I add noise after the first null prior to
         encrypting. This prevents empty blocks from looking identical to
         eachother in the encrypted file."""
-   
+
         block_size = Blowfish.block_size
         field += '\x00'
         reslen = reslen or (len(field) / block_size + 1) * block_size
@@ -341,13 +339,12 @@ class PDBFigaro (PasswordDatabase):
         plaintext = ""
         tmp = {}
         block_size = Blowfish.block_size
-        num_blocks = len(field)/block_size
+        num_blocks = len(field)//block_size
         for b in range(num_blocks):
             for i in range(block_size):
                 tmp[i*num_blocks+b] = field[b*block_size+i]
-
         for c in range(len(tmp)):
-            if tmp[c] == chr(0):
+            if tmp[c] == 0:
                 break
-            plaintext = plaintext + tmp[c]
-        return str(plaintext)
+            plaintext = plaintext + chr(tmp[c])
+        return plaintext

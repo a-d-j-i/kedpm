@@ -18,70 +18,69 @@
 
 '''Main KedPM window'''
 import os
-import gtk
-from gtk import gdk
-import gobject
-import globals
 
-from kedpm.password import TYPE_STRING
+from gi.repository import GObject
+from gi.repository import Gtk
+
+FALSE = 0
 from kedpm.exceptions import RenameError
+from kedpm.frontends.gtk.base import Window
+from kedpm.frontends.gtk.dialogs import ParsePasswordDialog, PasswordEditDialog, AboutDialog, \
+    AddCategoryDialog, AsPlainTextDialog, EditParserPatterns
+from kedpm.frontends.gtk.preferences import PreferencesDialog
+from kedpm.password import TYPE_STRING
+from kedpm.plugins.pdb_figaro import FigaroPassword  # FIXME: this should be parametrized
 
-from base import Window, processEvents
-import dialogs
-from preferences import PreferencesDialog
-from dialogs import errorMessageDialog
-from kedpm.plugins.pdb_figaro import FigaroPassword # FIXME: this should be parametrized
 
 class MainWindow(Window):
     '''Main window of Ked Password Manager'''
 
     name = "wnd_main"
-    #menu_names = ['menu_category']
+    # menu_names = ['menu_category']
     menu_category = None
     menu_password = None
 
-    modified = False        # Is database modified?
-    passwords = []          # List of passwords currently displaying in the password pane
-    prot = None             # Prototype password instance
-    password_menu = None    # Popup menu for RMB in password pane
-    selected_text = ''      # Current selection
-    cwtree = None           # Current working tree
-    search_text = ''        # Current password filter
-    flat_view = False       # Is password list flat?
-    search_history = []     # List of searched strings
+    modified = False  # Is database modified?
+    passwords = []  # List of passwords currently displaying in the password pane
+    prot = None  # Prototype password instance
+    password_menu = None  # Popup menu for RMB in password pane
+    selected_text = ''  # Current selection
+    cwtree = None  # Current working tree
+    search_text = ''  # Current password filter
+    flat_view = False  # Is password list flat?
+    search_history = []  # List of searched strings
     search_history_file = os.getenv("HOME") + '/.kedpm/gui_search_history'
 
-
-
-    def __init__(self):
+    def __init__(self, app):
         super(MainWindow, self).__init__()
-        self.pdb = globals.app.pdb
-        self.cwtree = self.password_tree = globals.app.pdb.getTree()
+        self.app = app
+        self.pdb = self.app.pdb
+        self.cwtree = self.password_tree = self.app.pdb.getTree()
         self.setupCategories()
         self.setupPasswords()
         pl_selection = self["password_list"].get_selection()
         pl_selection.connect("changed", self.on_password_list_selection_changed)
 
         self['category_tree'].grab_focus()
-        self.window.selection_add_target("PRIMARY", "STRING", 1)
-        self.window.selection_add_target("CLIPBOARD", "STRING", 1)
+        ### self.window.selection_add_target("PRIMARY", "STRING", 1)
+        ### self.window.selection_add_target("CLIPBOARD", "STRING", 1)
         self.menu_category = self.getGladeWidget('menu_category')
-        #self.menu_password = self.getGladeWidget('menu_password')
+        # self.menu_password = self.getGladeWidget('menu_password')
 
         # Other widgets setup
         self.statusbar = self['statusbar']
         self.setModified(False)
 
-        #import pdb; pdb.set_trace()
-        self['search_combo'].disable_activate()
+        # import pdb; pdb.set_trace()
+        ### self['search_combo'].disable_activate()
         self.loadHistory()
 
     def setupCategories(self):
         category_tree = self['category_tree']
-        renderer_cat = gtk.CellRendererText()
+        renderer_cat = Gtk.CellRendererText()
         renderer_cat.set_property("editable", True)
         renderer_cat.connect('edited', self.on_category_edited)
-        col = gtk.TreeViewColumn('Category', renderer_cat)
+        col = Gtk.TreeViewColumn('Category', renderer_cat)
         col.add_attribute(renderer_cat, 'text', 0)
         category_tree.append_column(col)
 
@@ -89,11 +88,11 @@ class MainWindow(Window):
 
     def updateCategories(self):
         category_tree = self['category_tree']
-        store = gtk.TreeStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+        store = Gtk.TreeStore(GObject.TYPE_STRING, GObject.TYPE_STRING)
         root_cat = store.append(None)
         store.set(root_cat, 0, 'Root', 1, '/')
         self.buildCategoryTree(store, root_cat, self.password_tree, '/')
-        #for cat_name in self.password_tree.getBranches():
+        # for cat_name in self.password_tree.getBranches():
         #    store.set(store.append(root_cat), 0, cat_name, 1, '/'+cat_name)
         category_tree.set_model(store)
         category_tree.expand_all()
@@ -101,9 +100,9 @@ class MainWindow(Window):
     def buildCategoryTree(self, store, root_iter, tree_branch, path):
         for cat_name in tree_branch.getBranches():
             sub_iter = store.append(root_iter)
-            store.set(sub_iter, 0, cat_name, 1, path+cat_name+'/')
+            store.set(sub_iter, 0, cat_name, 1, path + cat_name + '/')
             if tree_branch[cat_name].getBranches():
-                self.buildCategoryTree(store, sub_iter, tree_branch[cat_name], path+cat_name+'/')
+                self.buildCategoryTree(store, sub_iter, tree_branch[cat_name], path + cat_name + '/')
 
     def setupPasswords(self):
         """Rebuild and redraw password list.
@@ -123,15 +122,15 @@ class MainWindow(Window):
             fields = self.prot.getFieldsOfType([TYPE_STRING])
             count = 1
             for field in fields:
-                renderer = gtk.CellRendererText()
-                col = gtk.TreeViewColumn(self.prot.getFieldTitle(field), renderer)
+                renderer = Gtk.CellRendererText()
+                col = Gtk.TreeViewColumn(self.prot.getFieldTitle(field), renderer)
                 col.set_resizable(True)
                 col.set_sort_column_id(count)
                 col.add_attribute(renderer, 'text', count)
                 password_list.append_column(col)
                 count += 1
 
-            store = apply(gtk.ListStore,  [gobject.TYPE_INT] + [gobject.TYPE_STRING] * count)
+            store = Gtk.ListStore(*([GObject.TYPE_INT] + [GObject.TYPE_STRING] * count))
 
             pidx = 0
             for pwd in passwords:
@@ -143,7 +142,7 @@ class MainWindow(Window):
                     store.set(iter, count, pwd[field])
                     count += 1
         else:
-            store = gtk.ListStore(gobject.TYPE_STRING)
+            store = Gtk.ListStore(GObject.TYPE_STRING)
         self.passwords = passwords
         password_list.set_model(store)
         self.updateControls()
@@ -161,35 +160,36 @@ class MainWindow(Window):
         program state"""
 
         # Check if any password is currently selected
-        pwd_controls = ["tb_edit", "tb_delete", "mi_edit_password",
-            "mi_delete_password", "mi_as_plain_text"]
+        pwd_controls = ["pwd_sensitivepwd_sensitive", "tb_delete", "mi_edit_password",
+                        "mi_delete_password", "mi_as_plain_text"]
         pwd_sensitive = False
         if self.getSelectedPassword():
             pwd_sensitive = True
         for control in pwd_controls:
-            self[control].set_sensitive(pwd_sensitive)
+            if hasattr(self, control):
+                self[control].set_sensitive(pwd_sensitive)
         # Disable "Clear" button if search entry is empty
         search_text = self['search_entry'].get_text()
-        #clear_sensitive = False
-        #if search_text:
+        # clear_sensitive = False
+        # if search_text:
         #    clear_sensitive = True
         self["clear_button"].set_sensitive(search_text and True or False)
 
     def generatePasswordPopup(self):
-        #menu_password = self.menu_password
+        # menu_password = self.menu_password
         menu_password = self.getGladeWidget('menu_password')
         fields = self.prot.getFieldsOfType()
         fields.reverse()
         for field in fields:
-            copy_mi = gtk.MenuItem('Copy %s' % self.prot.getFieldTitle(field))
+            copy_mi = Gtk.MenuItem('Copy %s' % self.prot.getFieldTitle(field))
             copy_mi.connect('activate', self.on_password_popup_activate, field)
             menu_password.prepend(copy_mi)
         menu_password.show_all()
         return menu_password
 
     def setXSelection(self, text):
-        have_selection = self.window.selection_owner_set('PRIMARY')
-        have_selection = self.window.selection_owner_set('CLIPBOARD')
+        ### have_selection = self.window.selection_owner_set('PRIMARY')
+        ### have_selection = self.window.selection_owner_set('CLIPBOARD')
         self.selected_text = text
 
     def getSelectedPassword(self):
@@ -208,19 +208,19 @@ class MainWindow(Window):
 
     def tryToSave(self):
         self.setModified(True)
-        savemode = globals.app.conf.options["save-mode"]
-        response = gtk.RESPONSE_YES
+        savemode = self.app.conf.options["save-mode"]
+        response = Gtk.ResponseType.YES
         if savemode == 'no':
-            response = gtk.RESPONSE_NO
+            response = Gtk.ResponseType.NO
         if savemode == 'ask':
-            dialog = gtk.MessageDialog(self.window,
-                                      gtk.DIALOG_DESTROY_WITH_PARENT,
-                                      gtk.MESSAGE_QUESTION,
-                                      gtk.BUTTONS_YES_NO,
-                                      "Password database has changed.\nDo you want to save it now?");
-            response = dialog.run();
-            dialog.destroy();
-        if response == gtk.RESPONSE_YES:
+            dialog = Gtk.MessageDialog(self.window,
+                                       Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                       Gtk.MessageType.QUESTION,
+                                       Gtk.ButtonsType.YES_NO,
+                                       "Password database has changed.\nDo you want to save it now?")
+            response = dialog.run()
+            dialog.destroy()
+        if response == Gtk.ResponseType.YES:
             self.doSaveDatabase()
 
     def doSaveDatabase(self):
@@ -231,17 +231,17 @@ class MainWindow(Window):
         self.statusbar.push(cid, "Password database saved.")
         self.setModified(False)
 
-    def addPasswordInteractively(self, pswd = None):
+    def addPasswordInteractively(self, pswd=None):
         """Add the given password to the current category interactively. 
         
         Let user deside add the password or not and let him correct information
         before adding."""
-        
+
         if pswd is None:
             pswd = FigaroPassword()
-        dlg = dialogs.PasswordEditDialog(pswd)
+        dlg = PasswordEditDialog(pswd)
         response = dlg.run()
-        if response == gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             self.getCWTree().addNode(pswd)
             self.setupPasswords()
             self.tryToSave()
@@ -274,7 +274,7 @@ class MainWindow(Window):
             hist = f.read()
             f.close()
             self.search_history = hist.split('\n')
-            self['search_combo'].set_popdown_strings(self.search_history)
+            ### self['search_combo'].set_popdown_strings(self.search_history)
             self['search_entry'].set_text('')
 
     def saveHistory(self):
@@ -286,10 +286,10 @@ class MainWindow(Window):
         """Search passwords based on filter entered to search entry.
 
         Update search history if needed."""
-        
+
         search_entry = self['search_entry']
         search_text = search_entry.get_text()
-        
+
         # Do search
         if search_text != self.search_text:
             self.search_text = search_text
@@ -305,8 +305,9 @@ class MainWindow(Window):
         if self.modified:
             self.tryToSave()
         self.saveHistory()
-        print "Exiting."
-        gtk.main_quit() #make the program quit
+        print
+        "Exiting."
+        Gtk.main_quit()  # make the program quit
 
     def on_mi_quit_activate(self, widget):
         '''Menu: File->Quit'''
@@ -314,17 +315,17 @@ class MainWindow(Window):
 
     def on_mi_about_activate(self, widget):
         '''Menu: Help->About'''
-        dlg = dialogs.AboutDialog()
+        dlg = AboutDialog()
         dlg.run()
 
     def on_category_tree_cursor_changed(self, data):
         category_tree = self['category_tree']
-        store =  category_tree.get_model()
-        path, column = category_tree.get_cursor()#path, column)
-
-        cur_iter = store.get_iter(path)
-        pass_path = store.get_value(cur_iter, 1)
-        self.cwtree = self.password_tree.getTreeFromPath(pass_path.split('/'))
+        store = category_tree.get_model()
+        path, column = category_tree.get_cursor()  # path, column)
+        if path is not None:
+            cur_iter = store.get_iter(path)
+            pass_path = store.get_value(cur_iter, 1)
+            self.cwtree = self.password_tree.getTreeFromPath(pass_path.split('/'))
         self.setupPasswords()
 
     def on_password_list_button_press_event(self, widget, event):
@@ -332,16 +333,16 @@ class MainWindow(Window):
             # RMB clicked
             pathinfo = self['password_list'].get_path_at_pos(int(event.x), int(event.y))
             if pathinfo:
-                #path, column, cell_x, cell_y = pathinfo
-                #if not self.password_menu:
+                # path, column, cell_x, cell_y = pathinfo
+                # if not self.password_menu:
                 password_menu = self.generatePasswordPopup()
-                password_menu.popup(None, None, None, event.button, event.time)
-        return gtk.FALSE
+                password_menu.popup(None, None, None, None, event.button, event.time)
+        return FALSE
 
     def on_category_tree_button_press_event(self, widget, event):
         if event.button == 3:
-            self.menu_category.popup(None, None, None, event.button, event.time)
-        return gtk.FALSE
+            self.menu_category.popup(None, None, None, None, event.button, event.time)
+        return FALSE
 
     def on_password_popup_activate(self, widget, data):
         password = self.getSelectedPassword()
@@ -349,7 +350,8 @@ class MainWindow(Window):
         self.setXSelection(copytext)
 
     def on_wnd_main_selection_clear_event(self, widget, event):
-        print "clearing %s selection" % event.selection
+        print
+        "clearing %s selection" % event.selection
 
     def on_wnd_main_selection_get(self, widget, selection_data, info, time_stamp):
         selection_data.set_text(self.selected_text, len(self.selected_text))
@@ -364,9 +366,9 @@ class MainWindow(Window):
     def on_tb_edit_clicked(self, widget):
         sel_pswd = self.getSelectedPassword()
         if sel_pswd:
-            dlg = dialogs.PasswordEditDialog(sel_pswd)
+            dlg = PasswordEditDialog(sel_pswd)
             response = dlg.run()
-            if response == gtk.RESPONSE_OK:
+            if response == Gtk.ResponseType.OK:
                 self.setupPasswords()
                 self.tryToSave()
 
@@ -388,36 +390,36 @@ class MainWindow(Window):
 
     def on_mi_add_category_activate(self, widget):
         '''Main menu 'Add category' item activated'''
-        dlg = dialogs.AddCategoryDialog()
+        dlg = AddCategoryDialog()
         response = dlg.run()
-        if response == gtk.RESPONSE_OK and dlg.category_name!='':
+        if response == Gtk.ResponseType.OK and dlg.category_name != '':
             try:
                 self.getCWTree().addBranch(dlg.category_name)
             except AttributeError:
-                errorMessageDialog('Directory "%s" already exists!' % dlg.category_name);
+                self.errorMessageDialog('Directory "%s" already exists!' % dlg.category_name)
             else:
                 self.updateCategories()
 
     def on_category_tree_popup_menu(self, wodget):
         '''Shift-F10 pressed in category tree'''
-        self.menu_category.popup(None, None, None, 0, gtk.get_current_event_time())
+        self.menu_category.popup(None, None, None, None, 0, Gtk.get_current_event_time())
 
     def on_password_list_popup_menu(self, widget):
         '''Shift-F10 pressed in password tree'''
         password_menu = self.generatePasswordPopup()
-        password_menu.popup(None, None, None, 0, gtk.get_current_event_time())
+        password_menu.popup(None, None, None, None, 0, Gtk.get_current_event_time())
 
-    def on_category_edited(self, renderer, path, newname):
+    def on_category_edited(self, widget, path, newname):
         category_tree = self['category_tree']
-        store =  category_tree.get_model()
+        store = category_tree.get_model()
         cur_iter = store.get_iter(path)
         cat_path = store.get_value(store.get_iter(path), 1)
         path = cat_path.split('/')
         if path[-2] != newname:
             try:
                 self.password_tree.renameBranch(cat_path.split('/'), newname)
-            except RenameError, message:
-                errorMessageDialog(message[0])
+            except RenameError as message:
+                self.errorMessageDialog(message[0])
                 return
             self.updateCategories()
             self.tryToSave()
@@ -440,14 +442,14 @@ class MainWindow(Window):
         if not sel_pswd:
             return
         # Ask user is he sure
-        dialog = gtk.MessageDialog(self.window,
-                                  gtk.DIALOG_DESTROY_WITH_PARENT,
-                                  gtk.MESSAGE_QUESTION,
-                                  gtk.BUTTONS_YES_NO,
-                                  "Are you really want to delete this password?");
-        response = dialog.run();
-        dialog.destroy();
-        if response == gtk.RESPONSE_YES:
+        dialog = Gtk.MessageDialog(self.window,
+                                   Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                   Gtk.MessageType.QUESTION,
+                                   Gtk.ButtonsType.YES_NO,
+                                   "Are you really want to delete this password?")
+        response = dialog.run()
+        dialog.destroy()
+        if response == Gtk.ResponseType.YES:
             # Delete password
             self.password_tree.removeNode(sel_pswd)
             self.setupPasswords()
@@ -460,9 +462,9 @@ class MainWindow(Window):
         self.updateControls()
 
     def on_mi_parse_password_activate(self, widget):
-        dlg = dialogs.ParsePasswordDialog()
+        dlg = ParsePasswordDialog()
         response = dlg.run()
-        if response == gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             pswd = FigaroPassword()
             pswd.update(dlg.parseddict)
             self.addPasswordInteractively(pswd)
@@ -470,7 +472,7 @@ class MainWindow(Window):
     def on_mi_as_plain_text_activate(self, widget):
         sel_pswd = self.getSelectedPassword()
         if sel_pswd:
-            dlg = dialogs.AsPlainTextDialog()
+            dlg = AsPlainTextDialog()
             dlg.showPassword(sel_pswd)
             dlg.run()
 
@@ -486,9 +488,18 @@ class MainWindow(Window):
             self.toggleFlatView()
 
     def on_edit_parser_patterns_activate(self, widget):
-        dlg = dialogs.EditParserPatterns()
+        dlg = EditParserPatterns()
         dlg.run()
-        globals.app.conf.save()
-        
+        self.app.conf.save()
+
     def on_search_entry_changed(self, widget):
         self.performSearch(update_history=False)
+
+    def errorMessageDialog(self, message):
+        dialog = Gtk.MessageDialog(self.app.wnd_main.window,
+                                   Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                   Gtk.MessageType.ERROR,
+                                   Gtk.ButtonsType.CLOSE,
+                                   message)
+        dialog.run()
+        dialog.destroy()

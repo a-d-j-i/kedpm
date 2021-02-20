@@ -17,15 +17,15 @@
 # $Id: preferences.py,v 1.3 2004/01/04 17:07:16 kedder Exp $
 
 """Preferences for GTK2 GUI"""
-import gtk
 
-import globals
-from base import Dialog
-
+from gi.repository import Gtk
 from kedpm.config import SelectOption, FileOption
+from kedpm.frontends.gtk.base import Dialog
+
 
 class Preference(object):
     """Base class for GUI preferences items"""
+
     def __init__(self, option, widget):
         """option parameter is a kedpm.config.Option instance"""
         self._option = option
@@ -33,31 +33,32 @@ class Preference(object):
 
     def setWidget(self):
         """Set widget to the value of option"""
-        self.tooltips = gtk.Tooltips()
+        self.tooltips = Gtk.Tooltip()
         self.tooltips.set_tip(self._widget, self._option.doc)
 
     def setOption(self):
         """Set option from widget value"""
         pass
 
+
 class SelectPreference(Preference):
     """Preference for selection option.
     
-    Widget for this preference should be gtk.OptionMenu."""
-    
+    Widget for this preference should be pygtkcompat.OptionMenu."""
+
     def setWidget(self):
         """Build gtk menu and set the right value"""
-        assert self._widget.__class__ == gtk.OptionMenu
+        assert self._widget.__class__ == Gtk.OptionMenu
 
         super(SelectPreference, self).setWidget()
         # build option menu
-        menu = gtk.Menu()
+        menu = Gtk.Menu()
         constraint = self._option.getConstraint()
         for val in constraint:
-            menu.append(gtk.MenuItem(val))
+            menu.append(Gtk.MenuItem(val))
         menu.show_all()
         self._widget.set_menu(menu)
-        
+
         # set the value
         index = constraint.index(self._option.get())
         self._widget.set_history(index)
@@ -67,46 +68,48 @@ class SelectPreference(Preference):
         value = self._option.getConstraint()[index]
         self._option.set(value)
 
+
 class FilePreference(Preference):
     """Preference for file options. Lets user select file from interactive
     dialog.
 
-    Widget for this preference should be gtk.HBox."""
+    Widget for this preference should be pygtkcompat.HBox."""
 
     def setWidget(self):
         """Build filename entry and "Browse..." button"""
-        assert self._widget.__class__ == gtk.HBox
+        assert self._widget.__class__ == Gtk.HBox
 
         self._widget.set_spacing(6)
-        self.fname_entry  = gtk.Entry()        
+        self.fname_entry = Gtk.Entry()
         self._widget.pack_start(self.fname_entry, True, True, 0)
-        browse_button = gtk.Button('_Browse...')
+        browse_button = Gtk.Button('_Browse...')
         browse_button.connect('clicked', self.on_browse_button_activate)
         self._widget.pack_end(browse_button, False, True, 0)
         self._widget.show_all()
         # tooltip
-        self.tooltips = gtk.Tooltips()
+        self.tooltips = Gtk.Tooltip()
         self.tooltips.set_tip(self.fname_entry, self._option.doc)
         # set the value
         self.fname_entry.set_text(self._option.get())
 
     def on_browse_button_activate(self, widget):
-        file_dialog = gtk.FileSelection()
+        file_dialog = Gtk.FileSelection()
         file_dialog.set_filename(self.fname_entry.get_text())
         resp = file_dialog.run()
-        if resp == gtk.RESPONSE_OK:
+        if resp == Gtk.ResponseType.OK:
             self.fname_entry.set_text(file_dialog.get_filename())
         file_dialog.destroy()
-        
+
     def setOption(self):
         value = self.fname_entry.get_text()
         self._option.set(value)
 
+
 class PreferencesDialog(Dialog):
-    name="dlg_preferences"
+    name = "dlg_preferences"
 
     preferences = []
-    
+
     def run(self):
         self.options = globals.app.conf.options
         self.setUp()
@@ -117,7 +120,7 @@ class PreferencesDialog(Dialog):
 
     def setUp(self):
         options = globals.app.conf.options
-        #self.tooltips = gtk.Tooltips()
+        # self.tooltips = pygtkcompat.Tooltips()
         for opt in options.keys():
             wdg = self["wdg_" + opt]
             if wdg:
@@ -130,7 +133,7 @@ class PreferencesDialog(Dialog):
         """Read preferences dialog and set options"""
         for preference in self.preferences:
             preference.setOption()
-    
+
     def getPreferenceFromOption(self, option, widget):
         """Return preference instance depending on option type"""
         if isinstance(option, SelectOption):
@@ -138,7 +141,7 @@ class PreferencesDialog(Dialog):
         if isinstance(option, FileOption):
             return FilePreference(option, widget)
         else:
-            raise TypeError, "Unrecognized option"
+            raise TypeError("Unrecognized option")
 
     def saveConfig(self):
         globals.app.conf.save()

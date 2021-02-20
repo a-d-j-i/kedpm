@@ -18,34 +18,39 @@
 
 ''' Gtk Frontend Application class '''
 
+import gi
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk
 
-import pygtk
-pygtk.require("2.0");
+from kedpm.frontends.gtk.dialogs import NewDatabaseDialog, LoginDialog
+from kedpm.frontends.gtk.wnd_main import MainWindow
 
-import gtk
+#from gi import pygtkcompat
+
+#pygtkcompat.enable()
+#pygtkcompat.enable_gtk(version='3.0')
+
 import sys
 from os.path import expanduser
 
 from kedpm.plugins.pdb_figaro import PDBFigaro
 from kedpm.passdb import DatabaseNotExist
 
-import globals
-from wnd_main import MainWindow
-from dialogs import NewDatabaseDialog, LoginDialog
 from kedpm.frontends.frontend import Frontend
 
-class Application(object, Frontend):
+
+class Application(Frontend):
     pdb = None
     wnd_main = None
-    
+
     def openDatabase(self):
-        self.pdb = PDBFigaro(filename = expanduser(self.conf.options['fpm-database']))
-        dlg = LoginDialog(pdb = self.pdb)
+        self.pdb = PDBFigaro(filename=expanduser(self.conf.options['fpm-database']))
+        dlg = LoginDialog(pdb=self.pdb)
         password = dlg['password']
         try:
             res = dlg.run()
-            if res != gtk.RESPONSE_OK:
-                print "Good bye."
+            if res != Gtk.ResponseType.OK:
+                print("Good bye.")
                 sys.exit(1)
         except DatabaseNotExist:
             dlg.destroyDialog()
@@ -63,25 +68,24 @@ class Application(object, Frontend):
         return newpass
 
     def mainLoop(self):
-        globals.app = self # Make application instance available to all modules
-        self.wnd_main = MainWindow()
-        gtk.main()
+        #globals.app = self # Make application instance available to all modules
+        self.wnd_main = MainWindow(self)
+        Gtk.main()
 
     def showMessage(self, message):
-        dialog = gtk.MessageDialog(None,
-                                    gtk.DIALOG_DESTROY_WITH_PARENT,
-                                    gtk.MESSAGE_INFO,
-                                    gtk.BUTTONS_CLOSE,
-                                    message);
+        dialog = Gtk.MessageDialog(None,
+                                   Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                   Gtk.MessageType.INFO,
+                                   Gtk.ButtonsType.CLOSE,
+                                   message);
         dialog.run();
         dialog.destroy();
-                
+
     def _run(self):
-        globals.app = self # Make application instance available to all modules
+        globals.app = self  # Make application instance available to all modules
         self.openDatabase()
         self.wnd_main = MainWindow()
-        gtk.main()
-        #from dialogs import PasswordEditDialog
-        #d = PasswordEditDialog()
-        #d.run()
-        
+        Gtk.main()
+        # from dialogs import PasswordEditDialog
+        # d = PasswordEditDialog()
+        # d.run()

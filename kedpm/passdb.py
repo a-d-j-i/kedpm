@@ -17,11 +17,12 @@
 # $Id: passdb.py,v 1.4 2004/01/04 17:07:16 kedder Exp $
 
 """ Password Database """
+from kedpm.password_tree import PasswordTree
 
-from password_tree import PasswordTree
 
 class DatabaseNotExist(IOError):
     pass
+
 
 class PasswordDatabase:
     """ Base class for password databases.
@@ -31,7 +32,7 @@ class PasswordDatabase:
     def __init__(self, **args):
         self._pass_tree = PasswordTree()
 
-    def open(self, password = ""):
+    def open(self, password=""):
         """ Open database from external source """
         pass
 

@@ -18,21 +18,24 @@
 
 """Configuration for Ked Password Manager"""
 import os
+from collections import UserDict
 from xml.dom import minidom
-from UserDict import UserDict
 
 # Configuration version
 __version__ = "0.1"
 
+
 class OptionError(ValueError):
     """Raised when option value validation fails"""
     pass
+
 
 class Option:
     """Base class for all option types"""
 
     _value = None
     doc = ""
+
     def __init__(self, default=None, doc=""):
         self.set(default)
         self.doc = doc
@@ -46,25 +49,27 @@ class Option:
     def set(self, value):
         self._value = value
 
-class FileOption (Option):
+
+class FileOption(Option):
     """Option containing filename"""
     pass
 
-class SelectOption (Option):
+
+class SelectOption(Option):
     """Option that can be set to value from known list of possible values"""
 
     __constraint = []
-    
-    def __init__(self, constraint, default = None, doc = ""):
+
+    def __init__(self, constraint, default=None, doc=""):
         """constraint is a non-empty list of possible option values"""
         if type(constraint) != type([]) or not constraint:
-            raise ValueError, "constraint must be a non-empty list"
+            raise ValueError("constraint must be a non-empty list")
         self.__constraint = constraint
         Option.__init__(self, default, doc)
-    
+
     def set(self, value):
         if value not in self.__constraint:
-            raise OptionError, "Value must be one of %s" % self.__constraint
+            raise OptionError("Value must be one of %s" % self.__constraint)
         self._value = value
 
     def getConstraint(self):
@@ -77,17 +82,12 @@ class Options (UserDict):
     def getOption(self, key):
         return UserDict.__getitem__(self, key)
 
-    def __getitem__(self, key):
-        return self.getOption(key).get()
-
-    def __setitem__(self, key, value):
-        self.getOption(key).set(value)
 
 class Configuration:
     """Configuration file interface"""
 
     # Configuration file name
-    #filename = "doc/sample_config.xml"
+    # filename = "doc/sample_config.xml"
     filename = os.getenv('HOME') + '/.kedpm/config.xml'
 
     options = Options({
@@ -110,16 +110,16 @@ Changes will take effect after kedpm restart."""),
     patterns = []
 
     def __init__(self):
-        #self.options = Options()
+        # self.options = Options()
         pass
-    
+
     def open(self):
         """Open and parse configuration xml file"""
         # Check if config file is readable
         if not os.access(self.filename, os.R_OK):
             # Config isn't readable. Try to create default one
             self.create()
-            
+
         xml = minidom.parse(self.filename)
         doc = xml.documentElement
 
@@ -127,7 +127,7 @@ Changes will take effect after kedpm restart."""),
             ("options", "option", self.options),
             ("patterns", "pattern", self.patterns),
         ]
-        
+
         # Read options
         tag = doc.getElementsByTagName('options')[0]
         items = tag.getElementsByTagName('option')
@@ -137,12 +137,12 @@ Changes will take effect after kedpm restart."""),
             for child in item.childNodes:
                 item_value += child.data
             try:
-                #self.options[item_id].set(item_value)
+                # self.options[item_id].set(item_value)
                 self.options[item_id] = item_value
             except KeyError:
                 # Ignore unrecognized options
                 pass
-                
+
         # Read patterns
         tag = doc.getElementsByTagName('patterns')[0]
         items = tag.getElementsByTagName('pattern')
@@ -169,17 +169,17 @@ Changes will take effect after kedpm restart."""),
 
         dirname, fname = os.path.split(self.filename)
         if not os.access(dirname, os.F_OK):
-            print "Creating directory %s" % dirname
-            os.mkdir(dirname, 0700)
+            print("Creating directory %s" % dirname)
+            os.mkdir(dirname, 0o700)
         self.save()
 
     def buildDOM(self):
         """Build DOM object for current configuration"""
         domimpl = minidom.getDOMImplementation()
-        document= domimpl.createDocument("http://kedpm.sourceforge.net/xml/fpm", "config", None)
+        document = domimpl.createDocument("http://kedpm.sourceforge.net/xml/fpm", "config", None)
         root = document.documentElement
         root.setAttribute('verion', __version__)
-        
+
         # Add options
         options = document.createElement('options')
         root.appendChild(options)
@@ -188,7 +188,7 @@ Changes will take effect after kedpm restart."""),
             opt_node.setAttribute('name', optname)
             opt_node.appendChild(document.createTextNode(optvalue.get()))
             options.appendChild(opt_node)
-            
+
         root.appendChild(document.createTextNode('\n'))
         # Add patterns
         patterns = document.createElement('patterns')
@@ -197,6 +197,5 @@ Changes will take effect after kedpm restart."""),
             pat_node = document.createElement('pattern')
             pat_node.appendChild(document.createTextNode(pattern))
             patterns.appendChild(pat_node)
-            
+
         return document
-        

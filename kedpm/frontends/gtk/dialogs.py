@@ -17,19 +17,20 @@
 # $Id: dialogs.py,v 1.19 2004/02/19 21:51:40 kedder Exp $
 
 '''Dialog classes'''
+from gi.repository import GObject
+from gi.repository import Gtk
 
-import gtk
-import gobject
-from gtk import keysyms
-
-from base import Dialog, processEvents
-from kedpm.exceptions import WrongPassword
-from kedpm.parser import parseMessage
+FALSE = 0
+TRUE = 1
 from kedpm import password, __version__
-import globals
+from kedpm.exceptions import WrongPassword
+from kedpm.frontends.gtk.base import Dialog
+from kedpm.parser import parseMessage
+
 
 class NewDatabaseDialog(Dialog):
     name = "dlg_new_database"
+
     def __init__(self):
         super(NewDatabaseDialog, self).__init__(transient_for=None)
 
@@ -37,7 +38,7 @@ class NewDatabaseDialog(Dialog):
         """Return new selected password. None if Cancel button pressed."""
         while 1:
             res = self.window.run()
-            if res != gtk.RESPONSE_OK:
+            if res != Gtk.ResponseType.OK:
                 return None
             self['message'].show()
             if self['password'].get_text() != self['repeat'].get_text():
@@ -48,10 +49,11 @@ class NewDatabaseDialog(Dialog):
                 newpass = self['password'].get_text()
                 self.destroyDialog()
                 return newpass
-            
-            
+
+
 class LoginDialog(Dialog):
     name = "dlg_login"
+
     def __init__(self, pdb):
         super(LoginDialog, self).__init__(transient_for=None)
         self.pdb = pdb
@@ -67,21 +69,22 @@ class LoginDialog(Dialog):
                 self.message.set_markup('<span color="red"><b>Password incorrect. Please try again</b></span>')
                 password.select_region(0, len(password.get_text()))
             res = self.window.run()
-            if res != gtk.RESPONSE_OK:
+            if res != Gtk.ResponseType.OK:
                 return res
             self.message.show()
         self.destroyDialog()
         return res
 
     def on_dlg_login_response(self, widget, response_id):
-        if response_id == gtk.RESPONSE_OK:
+        if response_id == Gtk.ResponseType.OK:
             self.message.show()
             self.message.set_markup('<b>Opening...</b>')
-            processEvents()
+            # Gtk.processEvents()
 
 
 class CreditsDialog(Dialog):
     name = "dlg_credits"
+
 
 class AboutDialog(Dialog):
     name = "dlg_about"
@@ -92,15 +95,18 @@ class AboutDialog(Dialog):
 
     def run(self):
         self.window.show()
-        
+
     def on_dlg_about_response(self, widget, response_id):
-        if response_id == gtk.RESPONSE_CANCEL:
+        if response_id == Gtk.ResponseType.CANCEL:
             self.destroyDialog()
         elif response_id == 1:
             CreditsDialog(transient_for=self.window).run()
 
- # FIXME: this should be parametrized
-from kedpm.plugins.pdb_figaro import FigaroPassword, FigaroPasswordTooLongError
+
+# FIXME: this should be parametrized
+from kedpm.plugins.pdb_figaro import FigaroPasswordTooLongError
+
+
 class PasswordEditDialog(Dialog):
     name = "dlg_edit"
 
@@ -109,53 +115,54 @@ class PasswordEditDialog(Dialog):
     def __init__(self, password):
         '''Construct password editing dialog from password spec. Accept password object'''
         super(PasswordEditDialog, self).__init__()
-        #self.window.hide()
+        # self.window.hide()
         tbl = self['edit_table']
 
-        #self.password = FigaroPassword(title="Title", notes="Notes", password="Pass")
+        # self.password = FigaroPassword(title="Title", notes="Notes", password="Pass")
         self.password = password
         fti = self.password.fields_type_info
         tbl.set_property('n-rows', len(fti))
         row = 0
         self.entries = {}
         for field, type_info in fti:
-            label = gtk.Label(type_info['title']+":")
+            label = Gtk.Label(type_info['title'] + ":")
             label.set_alignment(0, 0)
             widget, entry = self.getEntryWidget(type_info['type'], self.password[field])
             self.entries[field] = entry
-            tbl.attach(label, 0, 1, row, row+1, gtk.FILL, gtk.FILL, 0, 0)
-            tbl.attach(widget, 1, 2, row, row+1, gtk.EXPAND | gtk.FILL, gtk.EXPAND, 0, 0)
+            tbl.attach(label, 0, 1, row, row + 1, Gtk.AttachOptions.FILL, Gtk.AttachOptions.FILL, 0, 0)
+            tbl.attach(widget, 1, 2, row, row + 1, Gtk.AttachOptions.EXPAND | Gtk.AttachOptions.FILL,
+                       Gtk.AttachOptions.EXPAND, 0, 0)
             row += 1
-        #tbl.show_all()
+        # tbl.show_all()
         self.window.show_all()
 
     def getEntryWidget(self, type, value):
         '''Return compound widget, text entry'''
         if type == password.TYPE_PASSWORD:
-            entry = gtk.Entry()
+            entry = Gtk.Entry()
             entry.set_text(value)
-            hbox = gtk.HBox()
+            hbox = Gtk.HBox()
             hbox.set_spacing(6)
-            entry.set_visibility(gtk.FALSE)
-            hbox.pack_start(entry, gtk.FALSE, gtk.TRUE)
-            btn = gtk.ToggleButton('_Show')
-            btn.set_property('can-focus', gtk.FALSE)
+            entry.set_visibility(FALSE)
+            hbox.pack_start(entry, FALSE, TRUE, 0)
+            btn = Gtk.ToggleButton('_Show')
+            btn.set_property('can-focus', FALSE)
             btn.connect('toggled', self.on_show_button_toggled, entry)
-            hbox.pack_start(btn, gtk.FALSE, gtk.TRUE)
+            hbox.pack_start(btn, FALSE, TRUE, 0)
             return hbox, entry
         elif type == password.TYPE_TEXT:
-            frame = gtk.Frame()
-            frame.set_shadow_type(gtk.SHADOW_IN)
-            scroll = gtk.ScrolledWindow()
-            scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-            entry = gtk.TextView()
-            entry.set_wrap_mode(gtk.WRAP_WORD)
+            frame = Gtk.Frame()
+            frame.set_shadow_type(Gtk.ShadowType.IN)
+            scroll = Gtk.ScrolledWindow()
+            scroll.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+            entry = Gtk.TextView()
+            entry.set_wrap_mode(Gtk.WrapMode.WORD)
             entry.get_buffer().set_text(value)
             scroll.add(entry)
             frame.add(scroll)
             return frame, entry
         else:
-            entry = gtk.Entry()
+            entry = Gtk.Entry()
             entry.set_text(value)
             return entry, entry
 
@@ -164,28 +171,27 @@ class PasswordEditDialog(Dialog):
         self.message = self['message']
         while 1:
             res = self.window.run()
-            if res != gtk.RESPONSE_OK:
+            if res != Gtk.ResponseType.OK:
                 break
             if self.process():
                 break
         self.destroyDialog()
         return res
 
-
     def on_show_button_toggled(self, widget, entry):
         entry.set_visibility(widget.get_active())
 
-    #def on_dlg_edit_response(self, widget, response_id):
+    # def on_dlg_edit_response(self, widget, response_id):
     def process(self):
         """Fill password object with entered data"""
         if True:
-        #if response_id == gtk.RESPONSE_OK:
+            # if response_id == ResponseType.OK:
             props = {}
             for field, entry in self.entries.items():
                 if self.password.getField(field)['type'] == password.TYPE_TEXT:
                     buf = entry.get_buffer()
                     b_start, b_end = buf.get_bounds()
-                    value = buf.get_text(b_start, b_end, gtk.FALSE)
+                    value = buf.get_text(b_start, b_end, FALSE)
                 else:
                     value = entry.get_text()
                 props[field] = value
@@ -209,62 +215,64 @@ class PasswordEditDialog(Dialog):
         message += "will break fpm compatibility. fpm will not be able to handle such "
         message += "long password correctly.\n\n"
         message += "Do you still want to save your password?"
-        
-        dialog = gtk.MessageDialog(self.window,
-                          gtk.DIALOG_DESTROY_WITH_PARENT,
-                          gtk.MESSAGE_QUESTION,
-                          gtk.BUTTONS_YES_NO,
-                          ""
-        );
-        dialog.label.set_markup(message)
+
+        dialog = Gtk.MessageDialog(self.window,
+                                   Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                   Gtk.MessageType.QUESTION,
+                                   Gtk.ButtonsType.YES_NO,
+                                   "")
+        ### dialog.label.set_markup(message)
         response = dialog.run()
         dialog.destroy()
-        if response == gtk.RESPONSE_YES:
+        if response == Gtk.RESPONSE_YES:
             return True
         return False
 
 
 class AddCategoryDialog(Dialog):
-    name="dlg_add_category"
+    name = "dlg_add_category"
     category_name = ""
-    
+
     def process(self):
         self.category_name = self['category_name'].get_text()
 
+
 class ParsePasswordDialog(Dialog):
-    name="dlg_parse"
+    name = "dlg_parse"
     parseddict = {}
-    
+
     def process(self):
         patterns = globals.app.conf.patterns
         buf = self['text'].get_buffer()
         b_start, b_end = buf.get_bounds()
-        text = buf.get_text(b_start, b_end, gtk.FALSE)
+        text = buf.get_text(b_start, b_end, FALSE)
         self.parseddict = parseMessage(text, patterns)
 
+
 class AsPlainTextDialog(Dialog):
-    name="dlg_as_plain_text"
-    
+    name = "dlg_as_plain_text"
+
     def showPassword(self, pswd):
         buf = self['text'].get_buffer()
         buf.set_text(pswd.asText())
 
+
 class EditParserPatterns(Dialog):
-    name="dlg_patterns"
+    name = "dlg_patterns"
     patterns = None
     editing = None
 
     def __init__(self):
         super(EditParserPatterns, self).__init__()
         self.patterns = globals.app.conf.patterns
-        #self.patterns = ["Hello", "World"]
+        # self.patterns = ["Hello", "World"]
         self.populate()
 
     def populate(self):
         plist = self['patterns']
-        store = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_INT)
-        renderer = gtk.CellRendererText()
-        col = gtk.TreeViewColumn('Pattern', renderer)
+        store = Gtk.ListStore(GObject.TYPE_STRING, GObject.TYPE_INT)
+        renderer = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn('Pattern', renderer)
         col.add_attribute(renderer, 'text', 0)
         plist.append_column(col)
 
@@ -293,13 +301,13 @@ class EditParserPatterns(Dialog):
         self['delete_pattern'].set_sensitive(False)
         self['pattern_entry'].set_text("")
         self['pattern_entry'].grab_focus()
-        self['edit_pattern'].set_label(gtk.STOCK_ADD)
+        self['edit_pattern'].set_label(Gtk.STOCK_ADD)
 
     def clearPatternsSelection(self):
         sel = self['patterns'].get_selection()
         sel.unselect_all()
         self.clearEntry()
-        
+
     def on_patterns_selection_changed(self, selection):
         plist = self['patterns']
         store, cur_iter = selection.get_selected()
@@ -313,7 +321,7 @@ class EditParserPatterns(Dialog):
             self.editing = cur_iter
             pattern = store.get_value(cur_iter, 0)
             pattern_entry.set_text(pattern)
-            self['edit_pattern'].set_label(gtk.STOCK_APPLY)
+            self['edit_pattern'].set_label(Gtk.STOCK_APPLY)
 
     def on_edit_pattern_clicked(self, widget):
         store = self['patterns'].get_model()
@@ -330,7 +338,7 @@ class EditParserPatterns(Dialog):
             self['pattern_entry'].grab_focus()
 
     def on_pattern_entry_changed(self, widget):
-        self['edit_pattern'].set_sensitive(widget.get_text()!="")
+        self['edit_pattern'].set_sensitive(widget.get_text() != "")
 
     def on_new_pattern_clicked(self, widget):
         self.clearPatternsSelection()
@@ -339,13 +347,3 @@ class EditParserPatterns(Dialog):
         if self.editing:
             store = self['patterns'].get_model()
             store.remove(self.editing)
-
-
-def errorMessageDialog(message):
-    dialog = gtk.MessageDialog(globals.app.wnd_main.window,
-                                  gtk.DIALOG_DESTROY_WITH_PARENT,
-                                  gtk.MESSAGE_ERROR,
-                                  gtk.BUTTONS_CLOSE,
-                                  message)
-    dialog.run()
-    dialog.destroy()

@@ -27,6 +27,7 @@ Supported frontends::
     
     * gtk - GTK-2 frontend'''
 
+
 def frontendFactory(frontend):
     if frontend == 'cli':
         from kedpm.frontends.cli import Application
@@ -35,9 +36,7 @@ def frontendFactory(frontend):
         from kedpm.frontends.gtk.app import Application
         return Application()
     else:
-        raise ValueError, '''Frontend "%s" is not supported.
+        raise ValueError('''Frontend "%s" is not supported.
 Supported frontends are:
     cli: Command line interface;
-    gtk: GTK2 graphical interface;''' % frontend
-
-
+    gtk: GTK2 graphical interface;''' % frontend)

@@ -20,8 +20,8 @@
 
 import re
 
-from password import Password
-from exceptions import RenameError
+from kedpm.exceptions import RenameError
+
 
 class PasswordTreeIterator:
     def __init__(self, tree, parent=None):
@@ -130,8 +130,8 @@ class PasswordTree:
 
     def addBranch(self, name):
         """Add new branch to the tree."""
-        if self._branches.has_key(name):
-            raise AttributeError, "Branch already exists"
+        if name in self._branches:
+            raise AttributeError("Branch already exists")
         branch = PasswordTree()
         self._branches[name] = branch
         return branch
@@ -191,7 +191,7 @@ class PasswordTree:
         except KeyError:
             pass
         else:
-            raise RenameError, "Category \"%s\" already exists." % newname
+            raise RenameError("Category \"%s\" already exists." % newname)
         branches = parent_tree.getBranches()
         cat = branches[oldname]
         del branches[oldname]
