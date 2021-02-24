@@ -8,8 +8,8 @@
         <property name="type">GTK_WINDOW_TOPLEVEL</property>
         <property name="window_position">GTK_WIN_POS_NONE</property>
         <property name="modal">False</property>
-        <property name="default_width">600</property>
-        <property name="default_height">420</property>
+        <property name="default_width">1024</property>
+        <property name="default_height">600</property>
         <property name="resizable">True</property>
         <property name="destroy_with_parent">False</property>
         <property name="icon">cloud16.png</property>
@@ -46,7 +46,7 @@
                                             </object>
                                         </child>
                                         <child>
-                                            <object class="GtkMenuItem" id="separatormenuitem1">
+                                            <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                             </object>
@@ -87,7 +87,7 @@
                                             </object>
                                             <object class="GtkImageMenuItem" id="mi_add_password">
                                                 <property name="visible">True</property>
-                                                <!-- property name="tooltip" translatable="yes">Add new password to current category</property-->
+                                                <property name="tooltip_text" translatable="yes">Add new password to current category</property>
                                                 <property name="label" translatable="yes">_Add password</property>
                                                 <property name="use_underline">True</property>
                                                 <signal name="activate" handler="on_tb_add_clicked" last_modification_time="Sun, 31 Aug 2003 19:46:17 GMT"/>
@@ -110,7 +110,7 @@
                                             </object>
                                             <object class="GtkImageMenuItem" id="mi_parse_password">
                                                 <property name="visible">True</property>
-                                                <!--property name="tooltip" translatable="yes">Add new password by parsing mailed password information</property-->
+                                                <property name="tooltip_text" translatable="yes">Add new password by parsing mailed password information</property>
                                                 <property name="label" translatable="yes">Pa_rse password</property>
                                                 <property name="use_underline">True</property>
                                                 <signal name="activate" handler="on_mi_parse_password_activate" last_modification_time="Sun, 19 Oct 2003 19:01:43 GMT"/>
@@ -132,7 +132,7 @@
                                             </object>
                                             <object class="GtkImageMenuItem" id="mi_edit_password">
                                                 <property name="visible">True</property>
-                                                <!--property name="tooltip" translatable="yes">Edit selected password</property-->
+                                                <property name="tooltip_text" translatable="yes">Edit selected password</property>
                                                 <property name="label" translatable="yes">_Edit password</property>
                                                 <property name="use_underline">True</property>
                                                 <signal name="activate" handler="on_tb_edit_clicked" last_modification_time="Sun, 31 Aug 2003 19:46:45 GMT"/>
@@ -154,7 +154,7 @@
                                             </object>
                                             <object class="GtkImageMenuItem" id="mi_delete_password">
                                                 <property name="visible">True</property>
-                                                <!--property name="tooltip" translatable="yes">Delete selected password</property-->
+                                                <property name="tooltip_text" translatable="yes">Delete selected password</property>
                                                 <property name="label" translatable="yes">_Delete password</property>
                                                 <property name="use_underline">True</property>
                                                 <signal name="activate" handler="on_tb_delete_clicked" last_modification_time="Sat, 18 Oct 2003 20:49:57 GMT"/>
@@ -164,7 +164,7 @@
                                         </child>
 
                                         <child>
-                                            <object class="GtkMenuItem" id="separator3">
+                                            <object class="GtkSeparatorMenuItem" id="separator3">
                                                 <property name="visible">True</property>
                                             </object>
                                         </child>
@@ -189,7 +189,7 @@
                                             </object>
                                         </child>
                                         <child>
-                                            <object class="GtkMenuItem" id="separator4">
+                                            <object class="GtkSeparatorMenuItem" id="separator4">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
                                             </object>
@@ -239,7 +239,7 @@
                                             </object>
                                             <object class="GtkImageMenuItem" id="mi_as_plain_text">
                                                 <property name="visible">True</property>
-                                                <!-- property name="tooltip" translatable="yes">Show password information as plain text.</property-->
+                                                <property name="tooltip_text" translatable="yes">Show password information as plain text.</property>
                                                 <property name="label" translatable="yes">As plain _text</property>
                                                 <property name="use_underline">True</property>
                                                 <signal name="activate" handler="on_mi_as_plain_text_activate" last_modification_time="Sat, 25 Oct 2003 19:00:38 GMT"/>
@@ -294,19 +294,28 @@
                             <object class="GtkToolButton" id="tb_save">
                                 <property name="visible">True</property>
                                 <property name="is_important">True</property>
-                                <!--property name="tooltip" translatable="yes">Save password database</property-->
+                                <property name="tooltip_text" translatable="yes">Save password database</property>
                                 <property name="label" translatable="yes">Save</property>
                                 <property name="use_underline">True</property>
                                 <property name="stock_id">gtk-save</property>
                                 <signal name="clicked" handler="on_mi_save_activate" last_modification_time="Sun, 31 Aug 2003 17:53:42 GMT"/>
                             </object>
                         </child>
-
+                        <child>
+                            <object class="GtkSeparatorToolItem" id="separator_100">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                            </object>
+                            <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                            </packing>
+                        </child>
                         <child>
                             <object class="GtkToolButton" id="tb_add">
                                 <property name="visible">True</property>
                                 <property name="is_important">True</property>
-                                <!--property name="tooltip" translatable="yes">Add password to current category</property-->
+                                <property name="tooltip_text" translatable="yes">Add password to current category</property>
                                 <property name="label" translatable="yes">Add</property>
                                 <property name="use_underline">True</property>
                                 <property name="stock_id">gtk-add</property>
@@ -317,19 +326,17 @@
                                 <!--property name="new_group">True</property-->
                             </packing>
                         </child>
-
                         <child>
                             <object class="GtkToolButton" id="tb_edit">
                                 <property name="visible">True</property>
                                 <property name="is_important">True</property>
-                                <!--property name="tooltip" translatable="yes">Edit selected password</property-->
+                                <property name="tooltip_text" translatable="yes">Edit selected password</property>
                                 <property name="label" translatable="yes">Edit</property>
                                 <property name="use_underline">True</property>
                                 <property name="stock_id">gtk-index</property>
                                 <signal name="clicked" handler="on_tb_edit_clicked" last_modification_time="Sat, 30 Aug 2003 16:20:12 GMT"/>
                             </object>
                         </child>
-
                         <child>
                             <object class="GtkToolButton" id="tb_delete">
                                 <property name="visible">True</property>
@@ -340,7 +347,16 @@
                                 <signal name="clicked" handler="on_tb_delete_clicked" last_modification_time="Sat, 18 Oct 2003 19:58:00 GMT"/>
                             </object>
                         </child>
-
+                        <child>
+                            <object class="GtkSeparatorToolItem" id="separator_101">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                            </object>
+                            <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
+                            </packing>
+                        </child>
                         <child>
                             <object class="GtkToggleToolButton" id="tb_flat_tree">
                                 <property name="visible">True</property>
@@ -368,7 +384,7 @@
                     <object class="GtkHPaned" id="hpaned1">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="position">140</property>
+                        <property name="position">340</property>
                         <child>
                             <object class="GtkScrolledWindow" id="scroll_tree">
                                 <property name="visible">True</property>
@@ -407,9 +423,17 @@
                                         <property name="homogeneous">False</property>
                                         <property name="spacing">3</property>
                                         <child>
-                                            <object class="GtkComboBox" id="search_combo">
+                                            <object class="GtkListStore" id="search_history_list">
+                                                <columns>
+                                                    <column type="gchararray"/>
+                                                </columns>
+                                                <!--property name="visible">True</property-->
+                                                <!--property name="selection_mode">GTK_SELECTION_BROWSE</property-->
+                                            </object>
+                                            <object class="GtkComboBoxText" id="search_combo">
                                                 <property name="visible">True</property>
                                                 <property name="has_entry">True</property>
+                                                <property name="model">search_history_list</property>
                                                 <!--property name="value_in_list">False</property-->
                                                 <!--property name="allow_empty">True</property-->
                                                 <!--property name="case_sensitive">False</property-->
@@ -433,12 +457,6 @@
                                                         <accelerator key="K" modifiers="GDK_CONTROL_MASK" signal="grab_focus"/>
                                                     </object>
                                                 </child>
-                                                <!--child internal-child="list">
-                                                  <object class="GtkListStore" id="search_history_list">
-                                                    <property name="visible">True</property>
-                                                    <property name="selection_mode">GTK_SELECTION_BROWSE</property>
-                                                  </object>
-                                                </child-->
                                             </object>
                                             <packing>
                                                 <property name="padding">0</property>
@@ -555,7 +573,6 @@
         <property name="resizable">False</property>
         <property name="destroy_with_parent">False</property>
         <property name="icon">cloud16.png</property>
-        <!--        <property name="has_separator">True</property>-->
         <signal handler="on_dlg_login_response" last_modification_time="Sun, 24 Aug 2003 12:45:20 GMT" name="response"/>
         <child internal-child="vbox">
             <object class="GtkVBox" id="dialog-vbox1">
@@ -761,7 +778,6 @@
         <property name="modal">True</property>
         <property name="resizable">False</property>
         <property name="destroy_with_parent">False</property>
-        <!--property name="has_separator">True</property-->
         <signal handler="on_dlg_about_response" last_modification_time="Sat, 23 Aug 2003 12:58:48 GMT" name="response"/>
         <child internal-child="vbox">
             <object class="GtkVBox" id="dialog-vbox2">
@@ -907,7 +923,6 @@
         <property name="modal">False</property>
         <property name="resizable">True</property>
         <property name="destroy_with_parent">False</property>
-        <!--property name="has_separator">True</property-->
         <child internal-child="vbox">
             <object class="GtkVBox" id="dialog-vbox3">
                 <property name="visible">True</property>
@@ -1034,7 +1049,7 @@
     <object class="GtkMenu" id="menu_password">
 
         <child>
-            <object class="GtkMenuItem" id="separator1">
+            <object class="GtkSeparatorMenuItem" id="separator1">
                 <property name="visible">True</property>
             </object>
         </child>
@@ -1086,7 +1101,6 @@
         <property name="modal">True</property>
         <property name="resizable">False</property>
         <property name="destroy_with_parent">False</property>
-        <!--property name="has_separator">True</property-->
         <child internal-child="vbox">
             <object class="GtkVBox" id="dialog-vbox4">
                 <property name="visible">True</property>
@@ -1173,7 +1187,7 @@
         </child>
 
         <child>
-            <object class="GtkMenuItem" id="separator2">
+            <object class="GtkSeparatorMenuItem" id="separator2">
                 <property name="visible">True</property>
             </object>
         </child>
@@ -1191,7 +1205,7 @@
 
             <object class="GtkImageMenuItem" id="mi_add_password">
                 <property name="visible">True</property>
-                <!--property name="tooltip" translatable="yes">Add password to selected category</property -->
+                <property name="tooltip_text" translatable="yes">Add password to selected category</property>
                 <property name="label" translatable="yes">_Add password</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_tb_add_clicked" last_modification_time="Mon, 01 Sep 2003 20:02:40 GMT"/>
@@ -1210,7 +1224,6 @@
         <property name="modal">True</property>
         <property name="resizable">True</property>
         <property name="destroy_with_parent">False</property>
-        <!--property name="has_separator">True</property-->
         <child internal-child="vbox">
             <object class="GtkVBox" id="dialog-vbox5">
                 <property name="visible">True</property>
@@ -1378,7 +1391,6 @@
         <property name="modal">True</property>
         <property name="resizable">False</property>
         <property name="destroy_with_parent">False</property>
-        <!--property name="has_separator">True</property-->
         <child internal-child="vbox">
             <object class="GtkVBox" id="dialog-vbox6">
                 <property name="visible">True</property>
@@ -1616,7 +1628,6 @@
         <property name="modal">False</property>
         <property name="resizable">True</property>
         <property name="destroy_with_parent">False</property>
-        <!--property name="has_separator">True</property-->
         <child internal-child="vbox">
             <object class="GtkVBox" id="dialog-vbox7">
                 <property name="visible">True</property>
@@ -1847,7 +1858,6 @@
         <property name="modal">True</property>
         <property name="resizable">True</property>
         <property name="destroy_with_parent">False</property>
-        <!--property name="has_separator">True</property-->
         <child internal-child="vbox">
             <object class="GtkVBox" id="dialog-vbox8">
                 <property name="visible">True</property>
@@ -2021,7 +2031,6 @@
         <property name="modal">False</property>
         <property name="resizable">True</property>
         <property name="destroy_with_parent">False</property>
-        <!-- property name="has_separator">True</property-->
         <child internal-child="vbox">
             <object class="GtkVBox" id="dialog-vbox9">
                 <property name="visible">True</property>
@@ -2110,7 +2119,6 @@
         <property name="modal">True</property>
         <property name="resizable">True</property>
         <property name="destroy_with_parent">False</property>
-        <!--property name="has_separator">True</property-->
         <signal handler="on_dlg_patterns_key_press_event" last_modification_time="Sat, 17 Jan 2004 23:00:07 GMT" name="key_press_event"/>
         <child internal-child="vbox">
             <object class="GtkVBox" id="dialog-vbox10">
