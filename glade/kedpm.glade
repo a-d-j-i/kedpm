@@ -24,55 +24,57 @@
                 <child>
                     <object class="GtkMenuBar" id="menubar">
                         <property name="visible">True</property>
-
+                        <property name="can_focus">False</property>
                         <child>
                             <object class="GtkMenuItem" id="menuitem1">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">_File</property>
                                 <property name="use_underline">True</property>
-
-                                <child>
+                                <child type="submenu">
                                     <object class="GtkMenu" id="menuitem1_menu">
-
+                                        <property name="can_focus">False</property>
                                         <child>
                                             <object class="GtkImageMenuItem" id="mi_save">
-                                                <property name="visible">True</property>
                                                 <property name="label">gtk-save</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="use_underline">True</property>
                                                 <property name="use_stock">True</property>
-                                                <signal name="activate" handler="on_mi_save_activate" last_modification_time="Sun, 31 Aug 2003 19:34:11 GMT"/>
-                                                <accelerator key="S" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+                                                <signal name="activate" handler="on_mi_save_activate" swapped="no"/>
+                                                <accelerator key="S" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                             </object>
                                         </child>
-
                                         <child>
                                             <object class="GtkMenuItem" id="separatormenuitem1">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                             </object>
                                         </child>
-
                                         <child>
                                             <object class="GtkImageMenuItem" id="mi_quit">
-                                                <property name="visible">True</property>
                                                 <property name="label">gtk-quit</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="use_underline">True</property>
                                                 <property name="use_stock">True</property>
-                                                <signal name="activate" handler="on_mi_quit_activate" last_modification_time="Sun, 31 Aug 2003 19:36:13 GMT"/>
-                                                <accelerator key="Q" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+                                                <signal name="activate" handler="on_mi_quit_activate" swapped="no"/>
+                                                <accelerator key="Q" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                             </object>
                                         </child>
                                     </object>
                                 </child>
                             </object>
                         </child>
-
                         <child>
                             <object class="GtkMenuItem" id="edit1">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">_Edit</property>
                                 <property name="use_underline">True</property>
-
-                                <child>
+                                <child type="submenu">
                                     <object class="GtkMenu" id="edit1_menu">
-
+                                        <property name="can_focus">False</property>
                                         <child>
                                             <object class="GtkImage" id="image149">
                                                 <property name="visible">True</property>
@@ -92,6 +94,7 @@
                                                 <accelerator key="N" modifiers="GDK_CONTROL_MASK" signal="activate"/>
                                                 <property name="image">image149</property>
                                                 <property name="use_stock">False</property>
+
                                             </object>
                                         </child>
 
@@ -107,12 +110,13 @@
                                             </object>
                                             <object class="GtkImageMenuItem" id="mi_parse_password">
                                                 <property name="visible">True</property>
-                                                <!-- property name="tooltip" translatable="yes">Add new password by parsing mailed password information</property -->
+                                                <!--property name="tooltip" translatable="yes">Add new password by parsing mailed password information</property-->
                                                 <property name="label" translatable="yes">Pa_rse password</property>
                                                 <property name="use_underline">True</property>
                                                 <signal name="activate" handler="on_mi_parse_password_activate" last_modification_time="Sun, 19 Oct 2003 19:01:43 GMT"/>
                                                 <property name="image">image150</property>
                                                 <property name="use_stock">False</property>
+
                                             </object>
                                         </child>
 
@@ -128,7 +132,7 @@
                                             </object>
                                             <object class="GtkImageMenuItem" id="mi_edit_password">
                                                 <property name="visible">True</property>
-                                                <!-- property name="tooltip" translatable="yes">Edit selected password</property -->
+                                                <!--property name="tooltip" translatable="yes">Edit selected password</property-->
                                                 <property name="label" translatable="yes">_Edit password</property>
                                                 <property name="use_underline">True</property>
                                                 <signal name="activate" handler="on_tb_edit_clicked" last_modification_time="Sun, 31 Aug 2003 19:46:45 GMT"/>
@@ -150,7 +154,7 @@
                                             </object>
                                             <object class="GtkImageMenuItem" id="mi_delete_password">
                                                 <property name="visible">True</property>
-                                                <!-- property name="tooltip" translatable="yes">Delete selected password</property -->
+                                                <!--property name="tooltip" translatable="yes">Delete selected password</property-->
                                                 <property name="label" translatable="yes">_Delete password</property>
                                                 <property name="use_underline">True</property>
                                                 <signal name="activate" handler="on_tb_delete_clicked" last_modification_time="Sat, 18 Oct 2003 20:49:57 GMT"/>
@@ -184,46 +188,45 @@
                                                 <property name="use_stock">False</property>
                                             </object>
                                         </child>
-
                                         <child>
                                             <object class="GtkMenuItem" id="separator4">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                             </object>
                                         </child>
-
                                         <child>
                                             <object class="GtkImageMenuItem" id="mi_preferences">
-                                                <property name="visible">True</property>
                                                 <property name="label">gtk-preferences</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="use_underline">True</property>
                                                 <property name="use_stock">True</property>
-                                                <signal name="activate" handler="on_mi_preferences_activate" last_modification_time="Sat, 11 Oct 2003 18:37:55 GMT"/>
+                                                <signal name="activate" handler="on_mi_preferences_activate" swapped="no"/>
                                             </object>
                                         </child>
                                     </object>
                                 </child>
                             </object>
                         </child>
-
                         <child>
                             <object class="GtkMenuItem" id="view1">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">_View</property>
                                 <property name="use_underline">True</property>
-
-                                <child>
+                                <child type="submenu">
                                     <object class="GtkMenu" id="view1_menu">
-
+                                        <property name="can_focus">False</property>
                                         <child>
                                             <object class="GtkCheckMenuItem" id="mi_flat_tree">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">Flat tree</property>
                                                 <property name="use_underline">True</property>
-                                                <property name="active">False</property>
-                                                <signal name="activate" handler="on_mi_flat_tree_activate" last_modification_time="Sun, 26 Oct 2003 13:52:41 GMT"/>
-                                                <accelerator key="F" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+                                                <signal name="activate" handler="on_mi_flat_tree_activate" swapped="no"/>
+                                                <accelerator key="F" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                             </object>
                                         </child>
-
                                         <child>
                                             <object class="GtkImage" id="image154">
                                                 <property name="visible">True</property>
@@ -245,27 +248,28 @@
                                                 <property name="use_stock">False</property>
                                             </object>
                                         </child>
+
                                     </object>
                                 </child>
                             </object>
                         </child>
-
                         <child>
                             <object class="GtkMenuItem" id="menuitem4">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="label" translatable="yes">_Help</property>
                                 <property name="use_underline">True</property>
-
-                                <child>
+                                <child type="submenu">
                                     <object class="GtkMenu" id="menuitem4_menu">
-
+                                        <property name="can_focus">False</property>
                                         <child>
                                             <object class="GtkMenuItem" id="mi_about">
                                                 <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
                                                 <property name="label" translatable="yes">_About</property>
                                                 <property name="use_underline">True</property>
-                                                <signal name="activate" handler="on_mi_about_activate" last_modification_time="Sat, 23 Aug 2003 12:09:11 GMT"/>
-                                                <accelerator key="F1" modifiers="0" signal="activate"/>
+                                                <signal name="activate" handler="on_mi_about_activate" swapped="no"/>
+                                                <accelerator key="F1" signal="activate"/>
                                             </object>
                                         </child>
                                     </object>
@@ -282,62 +286,72 @@
                 <child>
                     <object class="GtkToolbar" id="toolbar">
                         <property name="visible">True</property>
-                        <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
-                        <property name="toolbar_style">GTK_TOOLBAR_BOTH_HORIZ</property>
-                        <!--property name="tooltips">True</property-->
+                        <property name="can_focus">False</property>
+                        <property name="margin_bottom">29</property>
+                        <property name="toolbar_style">both-horiz</property>
+
                         <child>
-                            <object class="GtkButton" id="tb_save">
+                            <object class="GtkToolButton" id="tb_save">
                                 <property name="visible">True</property>
-                                <property name="tooltip-text" translatable="yes">Save password database</property>
+                                <property name="is_important">True</property>
+                                <!--property name="tooltip" translatable="yes">Save password database</property-->
                                 <property name="label" translatable="yes">Save</property>
                                 <property name="use_underline">True</property>
-                                <!--property name="stock_pixmap">gtk-save</property-->
-                                <signal handler="on_mi_save_activate" last_modification_time="Sun, 31 Aug 2003 17:53:42 GMT" name="clicked"/>
+                                <property name="stock_id">gtk-save</property>
+                                <signal name="clicked" handler="on_mi_save_activate" last_modification_time="Sun, 31 Aug 2003 17:53:42 GMT"/>
                             </object>
                         </child>
+
                         <child>
-                            <object class="GtkButton" id="tb_add">
+                            <object class="GtkToolButton" id="tb_add">
                                 <property name="visible">True</property>
-                                <property name="tooltip-text" translatable="yes">Add password to current category</property>
+                                <property name="is_important">True</property>
+                                <!--property name="tooltip" translatable="yes">Add password to current category</property-->
                                 <property name="label" translatable="yes">Add</property>
                                 <property name="use_underline">True</property>
-                                <!--property name="stock_pixmap">gtk-add</property-->
+                                <property name="stock_id">gtk-add</property>
                                 <!--property name="new_group">True</property-->
-                                <signal handler="on_tb_add_clicked" last_modification_time="Sat, 30 Aug 2003 16:20:06 GMT" name="clicked"/>
+                                <signal name="clicked" handler="on_tb_add_clicked" last_modification_time="Sat, 30 Aug 2003 16:20:06 GMT"/>
                             </object>
                             <packing>
                                 <!--property name="new_group">True</property-->
                             </packing>
                         </child>
+
                         <child>
-                            <object class="GtkButton" id="tb_edit">
+                            <object class="GtkToolButton" id="tb_edit">
                                 <property name="visible">True</property>
-                                <property name="tooltip-text" translatable="yes">Edit selected password</property>
+                                <property name="is_important">True</property>
+                                <!--property name="tooltip" translatable="yes">Edit selected password</property-->
                                 <property name="label" translatable="yes">Edit</property>
                                 <property name="use_underline">True</property>
-                                <!--property name="stock_pixmap">gtk-index</property-->
-                                <signal handler="on_tb_edit_clicked" last_modification_time="Sat, 30 Aug 2003 16:20:12 GMT" name="clicked"/>
+                                <property name="stock_id">gtk-index</property>
+                                <signal name="clicked" handler="on_tb_edit_clicked" last_modification_time="Sat, 30 Aug 2003 16:20:12 GMT"/>
                             </object>
                         </child>
+
                         <child>
-                            <object class="GtkButton" id="tb_delete">
+                            <object class="GtkToolButton" id="tb_delete">
                                 <property name="visible">True</property>
+                                <property name="is_important">True</property>
                                 <property name="label" translatable="yes">Delete</property>
                                 <property name="use_underline">True</property>
-                                <!--property name="stock_pixmap">gtk-delete</property-->
-                                <signal handler="on_tb_delete_clicked" last_modification_time="Sat, 18 Oct 2003 19:58:00 GMT" name="clicked"/>
+                                <property name="stock_id">gtk-delete</property>
+                                <signal name="clicked" handler="on_tb_delete_clicked" last_modification_time="Sat, 18 Oct 2003 19:58:00 GMT"/>
                             </object>
                         </child>
+
                         <child>
-                            <object class="GtkToggleButton" id="tb_flat_tree">
+                            <object class="GtkToggleToolButton" id="tb_flat_tree">
                                 <property name="visible">True</property>
+                                <property name="is_important">True</property>
                                 <property name="label" translatable="yes">Flatten</property>
                                 <property name="use_underline">True</property>
-                                <!--property name="stock_pixmap">gtk-sort-ascending</property-->
+                                <property name="stock_id">gtk-sort-ascending</property>
                                 <property name="active">False</property>
-                                <property name="inconsistent">False</property>
+                                <!--property name="inconsistent">False</property-->
                                 <!--property name="new_group">True</property-->
-                                <signal handler="on_tb_flat_tree_toggled" last_modification_time="Sun, 26 Oct 2003 15:49:09 GMT" name="toggled"/>
+                                <signal name="toggled" handler="on_tb_flat_tree_toggled" last_modification_time="Sun, 26 Oct 2003 15:49:09 GMT"/>
                             </object>
                             <packing>
                                 <!--property name="new_group">True</property-->
