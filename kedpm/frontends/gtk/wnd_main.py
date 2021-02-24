@@ -266,7 +266,10 @@ class MainWindow(Window):
         search_text = search_entry.get_text()
         if search_text and search_text not in self.search_history:
             self.search_history.insert(0, search_text)
-            self['search_combo'].set_popdown_strings(self.search_history)
+            model = self['search_combo'].get_model()
+            model.clear()
+            for x in self.search_history:
+                model.append([x])
 
     def loadHistory(self):
         if os.access(self.search_history_file, os.R_OK):
@@ -274,7 +277,10 @@ class MainWindow(Window):
             hist = f.read()
             f.close()
             self.search_history = hist.split('\n')
-            ### self['search_combo'].set_popdown_strings(self.search_history)
+            model = self['search_combo'].get_model()
+            model.clear()
+            for x in self.search_history:
+                model.append([x])
             self['search_entry'].set_text('')
 
     def saveHistory(self):
