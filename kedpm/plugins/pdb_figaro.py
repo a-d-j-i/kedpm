@@ -255,14 +255,14 @@ class PDBFigaro (PasswordDatabase):
     def encrypt(self, field, field_is_password=0):
         """ Encrypt FPM encoded field """
         hash=MD5.new()
-        hash.update(self._salt + self._password)
+        hash.update((self._salt + self._password).encode())
         key = hash.digest()
         bf = Blowfish.new(key)
         # Allow passwords that are longer than 24 characters. Unfortunately
         # this will break fpm compatibility somewhat - fpm will not be able to
         # handle such long password correctly.
-        noised = self._addNoise(field, field_is_password and
-                (len(field) / FPM_PASSWORD_LEN + 1) * FPM_PASSWORD_LEN)
+        noised = self._addNoise(field.encode('utf-8'), field_is_password and
+                (len(field) // FPM_PASSWORD_LEN + 1) * FPM_PASSWORD_LEN)
         rotated = self._rotate(noised)
         encrypted = bf.encrypt(rotated)
         hexstr = self._bin_to_hex(encrypted)
@@ -284,8 +284,8 @@ class PDBFigaro (PasswordDatabase):
         strout = ""
         for i in range(len(strin)):
             data = strin[i]
-            high = ord(data) / 16
-            low = ord(data) % 16
+            high = data // 16
+            low = data % 16
             strout += chr(ord('a')+high) + chr(ord('a')+low)
         assert (2*len(strin) == len(strout))
         return strout
@@ -305,13 +305,12 @@ class PDBFigaro (PasswordDatabase):
         """If we have a short string, I add noise after the first null prior to
         encrypting. This prevents empty blocks from looking identical to
         eachother in the encrypted file."""
-
         block_size = Blowfish.block_size
-        field += '\x00'
-        reslen = reslen or (len(field) / block_size + 1) * block_size
+        field += b'\x00'
+        reslen = reslen or (len(field) // block_size + 1) * block_size
         while len(field) < reslen:
-            rchar = chr(randint(0, 255))
-            field += rchar
+            rchar = randint(0, 255)
+            field += rchar.to_bytes(1, byteorder='big')
         return field
 
     def _rotate(self, field):
@@ -323,17 +322,16 @@ class PDBFigaro (PasswordDatabase):
         7-20 characters long.  Note that passwords from 21-24 characters start
         to fill blocks, and so will be constant.  """
 
-        plaintext = ""
+        plaintext = b""
         tmp = {}
         block_size = Blowfish.block_size
-        num_blocks = len(field)/block_size
+        num_blocks = len(field)//block_size
         for b in range(num_blocks):
             for i in range(block_size):
                 tmp[b*block_size+i] = field[i*num_blocks+b]
-
         for c in range(len(tmp)):
-            plaintext = plaintext + tmp[c]
-        return str(plaintext)
+            plaintext = plaintext + tmp[c].to_bytes(1, byteorder='big')
+        return plaintext
 
     def _unrotate(self, field):
         plaintext = ""
