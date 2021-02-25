@@ -20,6 +20,7 @@
 import os
 
 from gi.repository import GObject
+from gi.repository import Gdk
 from gi.repository import Gtk
 
 FALSE = 0
@@ -62,8 +63,8 @@ class MainWindow(Window):
         pl_selection.connect("changed", self.on_password_list_selection_changed)
 
         self['category_tree'].grab_focus()
-        ### self.window.selection_add_target("PRIMARY", "STRING", 1)
-        ### self.window.selection_add_target("CLIPBOARD", "STRING", 1)
+        Gtk.selection_add_target(self.window, Gdk.SELECTION_PRIMARY, Gdk.SELECTION_TYPE_STRING, 1)
+        Gtk.selection_add_target(self.window, Gdk.SELECTION_CLIPBOARD, Gdk.SELECTION_TYPE_STRING, 1)
         self.menu_category = self.getGladeWidget('menu_category')
         # self.menu_password = self.getGladeWidget('menu_password')
 
@@ -188,8 +189,8 @@ class MainWindow(Window):
         return menu_password
 
     def setXSelection(self, text):
-        ### have_selection = self.window.selection_owner_set('PRIMARY')
-        ### have_selection = self.window.selection_owner_set('CLIPBOARD')
+        have_selection = Gtk.selection_owner_set(self.window, Gdk.SELECTION_PRIMARY, 0)
+        have_selection = Gtk.selection_owner_set(self.window, Gdk.SELECTION_CLIPBOARD, 0)
         self.selected_text = text
 
     def getSelectedPassword(self):

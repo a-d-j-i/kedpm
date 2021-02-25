@@ -221,10 +221,10 @@ class PasswordEditDialog(Dialog):
                                    Gtk.MessageType.QUESTION,
                                    Gtk.ButtonsType.YES_NO,
                                    "")
-        ### dialog.label.set_markup(message)
+        dialog.set_markup(message)
         response = dialog.run()
         dialog.destroy()
-        if response == Gtk.RESPONSE_YES:
+        if response == Gtk.ResponseType.YES:
             return True
         return False
 
