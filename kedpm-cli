@@ -24,4 +24,4 @@
 from importlib.machinery import SourceFileLoader
 
 module = SourceFileLoader('app', './scripts/kedpm').load_module()
-module.main(['-g'])
+module.main(['-c'])
