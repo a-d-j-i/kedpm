@@ -1,0 +1,14 @@
+certifi==2021.5.30
+charset-normalizer==2.0.4
+crypto==1.4.1
+gobject==0.1.0
+idna==3.2
+Naked==0.1.31
+pkg_resources==0.0.0
+pycairo==1.20.1
+pycrypto==2.6.1
+PyGObject==3.40.1
+PyYAML==5.4.1
+requests==2.26.0
+shellescape==3.8.1
+urllib3==1.26.6
