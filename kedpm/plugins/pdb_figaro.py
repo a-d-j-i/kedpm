@@ -34,6 +34,8 @@ FPM_PASSWORD_LEN = 24
 
 class FigaroPasswordTooLongError(ValueError):
     pass
+class FigaroFieldTooLongError(ValueError):
+    pass
 
 class FigaroPassword (Password):
     fields_type_info = [
@@ -249,6 +251,9 @@ class PDBFigaro (PasswordDatabase):
             for child in datanode.childNodes:
                 encrypted += child.data
             assert len(encrypted) % 8 == 0
+            if len(encrypted) > 10000:
+                print(node, tag, len(encrypted))
+                raise FigaroFieldTooLongError(tag)
             return self.decrypt(encrypted)
         else: return ""
 
@@ -257,7 +262,7 @@ class PDBFigaro (PasswordDatabase):
         hash=MD5.new()
         hash.update((self._salt + self._password).encode())
         key = hash.digest()
-        bf = Blowfish.new(key)
+        bf = Blowfish.new(key, Blowfish.MODE_ECB)
         # Allow passwords that are longer than 24 characters. Unfortunately
         # this will break fpm compatibility somewhat - fpm will not be able to
         # handle such long password correctly.
@@ -273,7 +278,7 @@ class PDBFigaro (PasswordDatabase):
         hash=MD5.new()
         hash.update((self._salt + self._password).encode())
         key = hash.digest()
-        bf = Blowfish.new(key)
+        bf = Blowfish.new(key, Blowfish.MODE_ECB)
         binstr = self._hex_to_bin(field)
         rotated = bf.decrypt(binstr)
         plaintext = self._unrotate(rotated)
